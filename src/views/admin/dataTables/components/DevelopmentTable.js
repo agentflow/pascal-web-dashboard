@@ -11,20 +11,21 @@ import {
   Text,
   Button,
   Divider,
-  Modal, 
+  Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
   ModalCloseButton,
   ModalBody,
 } from "@chakra-ui/react";
-import { AiOutlineSearch, AiFillPlusCircle } from "react-icons/ai"; 
+import { AiOutlineSearch, AiFillPlusCircle } from "react-icons/ai";
 import YourLogoImage from "../../../../assets/img/auth/Eye.png";
 import YourCustomIcon from "../../../../assets/img/auth/Share.png";
 import AnotherCustomIcon from "../../../../assets/img/auth/X.png";
 
 
 export default function SearchAndUpload(props) {
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [data, setData] = useState(null);
   const [selectedOption, setSelectedOption] = useState("Address");
@@ -37,7 +38,11 @@ export default function SearchAndUpload(props) {
   const [selectedDealAddress, setSelectedDealAddress] = useState(null);
   const [selectedDealId, setSelectedDealId] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // State to control the visibility of the modal
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedType, setSelectedType] = useState("{deal.type}");
+  const [filePreview, setFilePreview] = useState(null);
 
   const handleSearchInputChange = (event) => {
     setSearchInput(event.target.value);
@@ -60,16 +65,19 @@ export default function SearchAndUpload(props) {
     try {
       setLoading(true);
 
-      const response = await axiosInstance.get('/users/getDocumentsForDeal/getDocumentsForDeal', {
-        params: {
-          dealId: dealId,
-        },
-      });
+      const response = await axiosInstance.get(
+        '/users/getDocumentsForDeal/getDocumentsForDeal',
+        {
+          params: {
+            dealId: dealId,
+          },
+        }
+      );
 
       setFetchedDocuments(response.data);
       setLoading(false);
       setSelectedDealAddress(address);
-      setSelectedAddress(address); 
+      setSelectedAddress(address);
       setSelectedDealId(dealId);
 
       console.log('Documents fetched successfully:', response.data);
@@ -92,12 +100,14 @@ export default function SearchAndUpload(props) {
       if (fileKey) {
         console.log('File key:', fileKey);
 
-        const response = await axiosInstance.get('/deals/getDealFile/getDealFile', {
-          params: {
-            key: fileKey,
-          },
-        });
-
+        const response = await axiosInstance.get(
+          '/deals/getDealFile/getDealFile',
+          {
+            params: {
+              key: fileKey,
+            },
+          }
+        );
 
         console.log('File fetched successfully:', response.data);
 
@@ -126,6 +136,92 @@ export default function SearchAndUpload(props) {
 
   const closeAddModal = () => {
     setIsAddModalOpen(false);
+    setUploadedFileName("");
+    setSelectedFile(null);
+  };
+
+  const handleFileInputChange = (event) => {
+    const selectedFile = event.target.files[0];
+  
+    if (selectedFile) {
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        setFilePreview(e.target.result);
+        setSelectedFile(selectedFile);
+      };
+      
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+  const buyerCategories = [
+    { title: "Offer(s) Sent", value: "offersSent" },
+
+  ];
+
+  const sellerCategories = [
+    { title: "Listing Agreement Signed", value: "listingAgreementSigned" },
+    { title: "Offer(s) Sent", value: "offersSent" },
+    { title: "Offer Accepted", value: "offerAccepted" },
+    { title: "Open Escrow", value: "openEscrow" },
+    { title: "Earnest Deposit Sent", value: "earnestDepositSent" },
+    { title: "Physical Contingencies", value: "physicalContingencies" },
+    { title: "Loan Contingencies", value: "loanContingencies" },
+    { title: "Appraisal Contingencies", value: "appraisalContingencies" },
+    { title: "Final Walkthrough", value: "finalWalkthrough" },
+    { title: "Recording of Title", value: "recordingOfTitle" },
+    { title: "Utilities & Contacts", value: "utilitiesAndContacts" },
+    { title: "Close of Escrow", value: "closeOfEscrow" },
+    { title: "Listing Agreement Signed", value: "listingAgreementSigned" },
+    { title: "Property Prepping", value: "propertyPrepping" },
+    { title: "Photography", value: "photography" },
+    { title: "Live On the MLS", value: "liveOnMls" },
+
+  ];
+
+  const categories = selectedType === "buyer" ? buyerCategories : sellerCategories;
+
+  const handleUploadClick = async () => {
+    if (selectedFile && selectedCategory) {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("dealId", selectedDealId);
+      formData.append("dealStep", selectedCategory);
+      formData.append("name", uploadedFileName);
+  
+      try {
+        const response = await axiosInstance.post(
+          "/deals/uploadDealFile",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+  
+        console.log("File uploaded successfully:", response.data);
+  
+        const updatedFetchedDocuments = fetchedDocuments.map((step) => {
+          if (step.title === selectedCategory) {
+            return {
+              ...step,
+              content: [...step.content, response.data],
+            };
+          }
+          return step;
+        });
+  
+        setFetchedDocuments(updatedFetchedDocuments);
+        setUploadedFileName("");
+        setSelectedFile(null);
+        setIsAddModalOpen(false);
+      } catch (error) {
+        console.error("Error uploading file:", error.response);
+        console.error("Error message:", error.message);
+      }
+    }
   };
 
   useEffect(() => {
@@ -137,11 +233,14 @@ export default function SearchAndUpload(props) {
           const userObj = JSON.parse(userJson);
           const userId = userObj.id;
           setUserId(userId);
-          const response = await axiosInstance.get("/users/getDocuments/getDocuments", {
-            params: {
-              userId: userId,
-            },
-          });
+          const response = await axiosInstance.get(
+            "/users/getDocuments/getDocuments",
+            {
+              params: {
+                userId: userId,
+              },
+            }
+          );
           setData(response.data);
         }
       } catch (error) {
@@ -152,36 +251,24 @@ export default function SearchAndUpload(props) {
     fetchUserAndDocuments();
   }, []);
 
-
-  const handleFileUpload = async (file, dealId, dealStep, name) => {
+  const handleDeleteClick = async (item) => {
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('dealId', dealId);
-      formData.append('dealStep', dealStep);
-      formData.append('name', name);
-
-      const response = await axiosInstance.post('/deals/uploadDealFile', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await axiosInstance.post('/deals/deleteDealFile', {
+        key: item.file,
+        dealId: selectedDealId,
+        dealStep: selectedCategory,
       });
-
-      console.log('File uploaded successfully:', response.data);
-
-    
-
+  
+      if (response.data) {
+        console.log("File Deleted Successfully");
+      }
     } catch (error) {
-      console.error('Error uploading file:', error.response); 
-      console.error('Error message:', error.message); 
-
-     
+      console.error("Error deleting file:", error);
     }
   };
 
   return (
     <Box>
-      <Box mt="30px" />
       <FormControl>
         <InputGroup>
           <Input
@@ -198,10 +285,10 @@ export default function SearchAndUpload(props) {
             onClick={handleSearchIconClick}
             cursor="pointer"
             p="2px"
-            left="550px" 
-            zIndex="1" 
+            left="550px"
+            zIndex="1"
           >
-            <AiOutlineSearch size="20px"/>
+            <AiOutlineSearch size="20px" />
           </InputRightElement>
         </InputGroup>
         <Box mt="30px" />
@@ -234,7 +321,7 @@ export default function SearchAndUpload(props) {
           <Box p="10px" flex="1">
             {/* Display selected address */}
             {selectedAddress && (
-              <Flex align="center" justify="space-between" >
+              <Flex align="center" justify="space-between">
                 <Text fontSize="lg" fontWeight="bold" mb="10px" whiteSpace="nowrap" maxWidth="100%">
                   {selectedAddress}
                 </Text>
@@ -247,7 +334,7 @@ export default function SearchAndUpload(props) {
                 </Box>
               </Flex>
             )}
-    
+
             {/* Render fetched documents */}
             {fetchedDocuments.map((step, index) => (
               <Box key={index} mt="20px" marginbottom="100px">
@@ -267,8 +354,8 @@ export default function SearchAndUpload(props) {
                             <Button onClick={() => handleDownloadClick(document)} ml="8px">
                               <img src={YourCustomIcon} alt="Icon" width="24" height="21" />
                             </Button>
-                            <Button onClick={() => handleAnotherButtonClick(document)} ml="8px">
-                              <img src={AnotherCustomIcon} alt="Another Icon" width="20" height="15" />
+                            <Button onClick={() => handleDeleteClick(document)} ml="8px">
+                              <img src={AnotherCustomIcon} alt="Delete Icon" width="20" height="15" />
                             </Button>
                           </Flex>
                         </Flex>
@@ -282,43 +369,80 @@ export default function SearchAndUpload(props) {
         </Flex>
       </FormControl>
 
-      {/* Sliding*/}
+      {/* Sliding */}
       <Modal isOpen={isAddModalOpen} onClose={closeAddModal} size="lg">
-  <ModalOverlay />
-  <ModalContent>
-    <ModalBody
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-      width="50%" 
-      position="fixed"
-      right="0"
-      height="100%" 
-      backgroundColor="white"
-      boxShadow="-2px 0 10px rgba(0, 0, 0, 0.1)" 
-      padding="20px"
-    >
-      <ModalCloseButton />
-      <Box>
-        <ModalHeader>Add Document To Deal</ModalHeader>
-        <input
-          type="file"
-          accept=".pdf, .doc, .docx, .png, .jpg, .jpeg" 
-          onChange={(event) => {
-            const selectedFile = event.target.files[0];
-            if (selectedFile) {
-              handleFileUpload(selectedFile, selectedDealId, expandedSection, "New File Name");
-            }
-          }}
-        />
-      </Box>
-      <Button onClick={closeAddModal} alignSelf="flex-end">
-        Close
-      </Button>
-    </ModalBody>
-  </ModalContent>
-</Modal>
-
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+            width="50%"
+            position="fixed"
+            right="0"
+            height="100%"
+            backgroundColor="white"
+            boxShadow="-2px 0 10px rgba(0, 0, 0, 0.1)"
+            padding="20px"
+          >
+            <ModalCloseButton />
+            <Box>
+              <ModalHeader paddingLeft="300px" color="274C77" style={{color:'Navy Blue', fontWeight:"bold"}}>Add Document To Deal</ModalHeader>
+              <Box paddingLeft="250px" paddingTop="50px">
+                <text style={{color:'black', fontWeight:"bold"}}>What step does this belong to : </text>
+                <select onChange={(event) => setSelectedCategory(event.target.value)}>
+                  <option value="">Select a Category</option>
+                  {categories.map((category) => (
+                    <option key={category.value} value={category.value}>
+                      {category.title}
+                    </option>
+                  ))}
+                </select>
+              </Box>
+              {selectedCategory && (
+                <Box>
+                  <Box paddingTop="50px" paddingLeft="250px"><text style={{color:'black', fontWeight:"bold"}}>Upload Document</text></Box>
+                  <Box paddingTop="50px" paddingLeft="400px">
+                    <input
+                      type="file"
+                      accept=".pdf, .doc, .docx, .png, .jpg, .jpeg"
+                      onChange={handleFileInputChange}
+                    />
+                  </Box>
+                  {selectedFile && (
+                    <Box paddingTop="20px" paddingLeft="400px">
+                      {selectedFile.type && selectedFile.type.includes("image") ? (
+                        <img src={filePreview} alt="File Preview" width="100" />
+                      ) : (
+                        <div>{uploadedFileName}</div>
+                      )}
+                    </Box>
+                  )}
+                  <Box paddingTop="50px">
+                    <Box paddingBottom="50px" paddingLeft="250px" style={{color:'black', fontWeight:"bold"}}><text>File Name</text></Box>
+                    <Box paddingLeft="400px">
+                      <input
+                        type="text"
+                        value={uploadedFileName}
+                        onChange={(event) => setUploadedFileName(event.target.value)}
+                        placeholder="Enter file name"
+                      />
+                    </Box>
+                    <Box>
+                      <Box paddingLeft="450px" paddingTop="50px">
+                        <Button onClick={handleUploadClick} >Upload</Button>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              )}
+            </Box>
+            <Button onClick={closeAddModal} alignSelf="flex-end">
+              Close
+            </Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }
