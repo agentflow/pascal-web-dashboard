@@ -251,6 +251,13 @@ export default function SearchAndUpload(props) {
     fetchUserAndDocuments();
   }, []);
 
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      searchForAddress();
+    }
+  };
+
   const handleDeleteClick = async (item) => {
     try {
       const response = await axiosInstance.post('/deals/deleteDealFile', {
@@ -275,10 +282,12 @@ export default function SearchAndUpload(props) {
             placeholder={`Search ${selectedOption}`}
             value={searchInput}
             onChange={handleSearchInputChange}
+            onKeyDown={handleKeyDown} // Add this line
             size="sm"
             height="40px"
             px="1"
             width="600px"
+            
           />
           <InputRightElement
             pointerEvents="auto"
@@ -287,6 +296,7 @@ export default function SearchAndUpload(props) {
             p="2px"
             left="550px"
             zIndex="1"
+            
           >
             <AiOutlineSearch size="20px" />
           </InputRightElement>
@@ -401,8 +411,8 @@ export default function SearchAndUpload(props) {
               </Box>
               {selectedCategory && (
                 <Box>
-                  <Box paddingTop="50px" paddingLeft="250px"><text style={{color:'black', fontWeight:"bold"}}>Upload Document</text></Box>
-                  <Box paddingTop="50px" paddingLeft="400px">
+                  <Box paddingTop="50px" paddingLeft="250px"><text style={{color:'black', fontWeight:"bold"}}>Upload Document :  </text>
+               
                     <input
                       type="file"
                       accept=".pdf, .doc, .docx, .png, .jpg, .jpeg"
@@ -420,7 +430,7 @@ export default function SearchAndUpload(props) {
                   )}
                   <Box paddingTop="50px">
                     <Box paddingBottom="50px" paddingLeft="250px" style={{color:'black', fontWeight:"bold"}}><text>File Name</text></Box>
-                    <Box paddingLeft="400px">
+                    <Box paddingLeft="250px">
                       <input
                         type="text"
                         value={uploadedFileName}
