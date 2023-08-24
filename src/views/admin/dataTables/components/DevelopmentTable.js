@@ -22,7 +22,7 @@ import { AiOutlineSearch, AiFillPlusCircle } from "react-icons/ai";
 import YourLogoImage from "../../../../assets/img/auth/Eye.png";
 import YourCustomIcon from "../../../../assets/img/auth/Share.png";
 import AnotherCustomIcon from "../../../../assets/img/auth/X.png";
-
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function SearchAndUpload(props) {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -43,6 +43,7 @@ export default function SearchAndUpload(props) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedType, setSelectedType] = useState("{deal.type}");
   const [filePreview, setFilePreview] = useState(null);
+  const history = useHistory();
 
   const handleSearchInputChange = (event) => {
     setSearchInput(event.target.value);
@@ -66,7 +67,7 @@ export default function SearchAndUpload(props) {
       setLoading(true);
 
       const response = await axiosInstance.get(
-        '/users/getDocumentsForDeal/getDocumentsForDeal',
+        "/users/getDocumentsForDeal/getDocumentsForDeal",
         {
           params: {
             dealId: dealId,
@@ -80,11 +81,11 @@ export default function SearchAndUpload(props) {
       setSelectedAddress(address);
       setSelectedDealId(dealId);
 
-      console.log('Documents fetched successfully:', response.data);
-
+      console.log("Documents fetched successfully:", response.data);
     } catch (error) {
       setLoading(false);
-      console.error('Error fetching documents for deal:', error);
+      console.error("Error fetching documents for deal:", error);
+      history.push("/auth/login");
     }
   };
 
@@ -94,14 +95,14 @@ export default function SearchAndUpload(props) {
 
   const handleFileClick = async (document) => {
     try {
-      console.log('DOC', document);
+      console.log("DOC", document);
       const fileKey = document.file;
 
       if (fileKey) {
-        console.log('File key:', fileKey);
+        console.log("File key:", fileKey);
 
         const response = await axiosInstance.get(
-          '/deals/getDealFile/getDealFile',
+          "/deals/getDealFile/getDealFile",
           {
             params: {
               key: fileKey,
@@ -109,16 +110,15 @@ export default function SearchAndUpload(props) {
           }
         );
 
-        console.log('File fetched successfully:', response.data);
+        console.log("File fetched successfully:", response.data);
 
         const newWindow = window.open();
         newWindow.document.write(response.data);
-
       } else {
-        console.error('File key is null');
+        console.error("File key is null");
       }
     } catch (error) {
-      console.error('Error fetching file:', error);
+      console.error("Error fetching file:", error);
     }
   };
 
@@ -142,23 +142,20 @@ export default function SearchAndUpload(props) {
 
   const handleFileInputChange = (event) => {
     const selectedFile = event.target.files[0];
-  
+
     if (selectedFile) {
       const reader = new FileReader();
-      
+
       reader.onload = (e) => {
         setFilePreview(e.target.result);
         setSelectedFile(selectedFile);
       };
-      
+
       reader.readAsDataURL(selectedFile);
     }
   };
 
-  const buyerCategories = [
-    { title: "Offer(s) Sent", value: "offersSent" },
-
-  ];
+  const buyerCategories = [{ title: "Offer(s) Sent", value: "offersSent" }];
 
   const sellerCategories = [
     { title: "Listing Agreement Signed", value: "listingAgreementSigned" },
@@ -177,10 +174,10 @@ export default function SearchAndUpload(props) {
     { title: "Property Prepping", value: "propertyPrepping" },
     { title: "Photography", value: "photography" },
     { title: "Live On the MLS", value: "liveOnMls" },
-
   ];
 
-  const categories = selectedType === "buyer" ? buyerCategories : sellerCategories;
+  const categories =
+    selectedType === "buyer" ? buyerCategories : sellerCategories;
 
   const handleUploadClick = async () => {
     if (selectedFile && selectedCategory) {
@@ -189,7 +186,7 @@ export default function SearchAndUpload(props) {
       formData.append("dealId", selectedDealId);
       formData.append("dealStep", selectedCategory);
       formData.append("name", uploadedFileName);
-  
+
       try {
         const response = await axiosInstance.post(
           "/deals/uploadDealFile",
@@ -200,9 +197,9 @@ export default function SearchAndUpload(props) {
             },
           }
         );
-  
+
         console.log("File uploaded successfully:", response.data);
-  
+
         const updatedFetchedDocuments = fetchedDocuments.map((step) => {
           if (step.title === selectedCategory) {
             return {
@@ -212,7 +209,7 @@ export default function SearchAndUpload(props) {
           }
           return step;
         });
-  
+
         setFetchedDocuments(updatedFetchedDocuments);
         setUploadedFileName("");
         setSelectedFile(null);
@@ -242,6 +239,8 @@ export default function SearchAndUpload(props) {
             }
           );
           setData(response.data);
+          searchForAddress();
+          console.log("Documents fetched successfully:", response.data);
         }
       } catch (error) {
         console.error("Error fetching user or documents:", error);
@@ -251,7 +250,6 @@ export default function SearchAndUpload(props) {
     fetchUserAndDocuments();
   }, []);
 
-
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       searchForAddress();
@@ -260,12 +258,12 @@ export default function SearchAndUpload(props) {
 
   const handleDeleteClick = async (item) => {
     try {
-      const response = await axiosInstance.post('/deals/deleteDealFile', {
+      const response = await axiosInstance.post("/deals/deleteDealFile", {
         key: item.file,
         dealId: selectedDealId,
         dealStep: selectedCategory,
       });
-  
+
       if (response.data) {
         console.log("File Deleted Successfully");
       }
@@ -287,7 +285,6 @@ export default function SearchAndUpload(props) {
             height="40px"
             px="1"
             width="600px"
-            
           />
           <InputRightElement
             pointerEvents="auto"
@@ -296,7 +293,6 @@ export default function SearchAndUpload(props) {
             p="2px"
             left="550px"
             zIndex="1"
-            
           >
             <AiOutlineSearch size="20px" />
           </InputRightElement>
@@ -305,34 +301,52 @@ export default function SearchAndUpload(props) {
         <Flex alignItems="stretch">
           <Box p="10px" flex="1">
             {/* Render filtered data */}
-            {filteredData.map((deal, index) => (
-              <Flex key={index} align="center" justify="space-between" mb="20px">
-                <Box>
-                  <Text
-                    fontSize="lg"
-                    fontWeight={selectedDealAddress === deal.address ? "bold" : "normal"}
-                    flexBasis="60%"
-                    whiteSpace="nowrap"
-                    overflow="hidden"
-                    textOverflow="ellipsis"
+
+              {fetchedDocuments.map((deal, index) => (
+                <Flex
+                  key={index}
+                  align="center"
+                  justify="space-between"
+                  mb="20px"
+                >
+                  <Box>
+                    <Text
+                      fontSize="lg"
+                      fontWeight={
+                        selectedDealAddress === deal.address ? "bold" : "normal"
+                      }
+                      flexBasis="60%"
+                      whiteSpace="nowrap"
+                      overflow="hidden"
+                      textOverflow="ellipsis"
+                    >
+                      {deal.address}
+                    </Text>
+                    <Text>Type: {deal.type}</Text>
+                    <Text>Client Name: {deal.clientName}</Text>
+                  </Box>
+                  <Button
+                    onClick={() => handleButtonClick(deal.dealId, deal.address)}
+                    disabled={loading}
                   >
-                    {deal.address}
-                  </Text>
-                  <Text>Type: {deal.type}</Text>
-                  <Text>Client Name: {deal.clientName}</Text>
-                </Box>
-                <Button onClick={() => handleButtonClick(deal.dealId, deal.address)} disabled={loading}>
-                  {loading ? 'Loading...' : `${deal.length} Files`}
-                </Button>
-              </Flex>
-            ))}
+                    {loading ? "Loading..." : `${deal.length} Files`}
+                  </Button>
+                </Flex>
+              ))}
+            
           </Box>
           <Divider orientation="vertical" mx="150px" borderColor="black" />
           <Box p="10px" flex="1">
             {/* Display selected address */}
             {selectedAddress && (
               <Flex align="center" justify="space-between">
-                <Text fontSize="lg" fontWeight="bold" mb="10px" whiteSpace="nowrap" maxWidth="100%">
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  mb="10px"
+                  whiteSpace="nowrap"
+                  maxWidth="100%"
+                >
                   {selectedAddress}
                 </Text>
                 <Box marginLeft="60px" marginTop="-15px">
@@ -348,24 +362,51 @@ export default function SearchAndUpload(props) {
             {/* Render fetched documents */}
             {fetchedDocuments.map((step, index) => (
               <Box key={index} mt="20px" marginbottom="100px">
-                <Button onClick={() => handleSectionClick(step.title)}>{step.title}</Button>
+                <Button onClick={() => handleSectionClick(step.title)}>
+                  {step.title}
+                </Button>
                 {expandedSection === step.title && (
                   <Box ml="20px">
                     {step.content.map((document, docIndex) => (
                       <Box key={docIndex}>
                         <Flex align="center" justify="space-between">
-                          <Text fontSize="md" whiteSpace="nowrap" maxWidth="70%">
+                          <Text
+                            fontSize="md"
+                            whiteSpace="nowrap"
+                            maxWidth="70%"
+                          >
                             {document.name}
                           </Text>
                           <Flex align="center" ml="20px">
                             <Button onClick={() => handleFileClick(document)}>
-                              <img src={YourLogoImage} alt="Logo" width="26" height="21" />
+                              <img
+                                src={YourLogoImage}
+                                alt="Logo"
+                                width="26"
+                                height="21"
+                              />
                             </Button>
-                            <Button onClick={() => handleDownloadClick(document)} ml="8px">
-                              <img src={YourCustomIcon} alt="Icon" width="24" height="21" />
+                            <Button
+                              onClick={() => handleDownloadClick(document)}
+                              ml="8px"
+                            >
+                              <img
+                                src={YourCustomIcon}
+                                alt="Icon"
+                                width="24"
+                                height="21"
+                              />
                             </Button>
-                            <Button onClick={() => handleDeleteClick(document)} ml="8px">
-                              <img src={AnotherCustomIcon} alt="Delete Icon" width="20" height="15" />
+                            <Button
+                              onClick={() => handleDeleteClick(document)}
+                              ml="8px"
+                            >
+                              <img
+                                src={AnotherCustomIcon}
+                                alt="Delete Icon"
+                                width="20"
+                                height="15"
+                              />
                             </Button>
                           </Flex>
                         </Flex>
@@ -397,10 +438,20 @@ export default function SearchAndUpload(props) {
           >
             <ModalCloseButton />
             <Box>
-              <ModalHeader paddingLeft="300px" color="274C77" style={{color:'Navy Blue', fontWeight:"bold"}}>Add Document To Deal</ModalHeader>
+              <ModalHeader
+                paddingLeft="300px"
+                color="274C77"
+                style={{ color: "Navy Blue", fontWeight: "bold" }}
+              >
+                Add Document To Deal
+              </ModalHeader>
               <Box paddingLeft="250px" paddingTop="50px">
-                <text style={{color:'black', fontWeight:"bold"}}>What step does this belong to : </text>
-                <select onChange={(event) => setSelectedCategory(event.target.value)}>
+                <text style={{ color: "black", fontWeight: "bold" }}>
+                  What step does this belong to :{" "}
+                </text>
+                <select
+                  onChange={(event) => setSelectedCategory(event.target.value)}
+                >
                   <option value="">Select a Category</option>
                   {categories.map((category) => (
                     <option key={category.value} value={category.value}>
@@ -411,8 +462,11 @@ export default function SearchAndUpload(props) {
               </Box>
               {selectedCategory && (
                 <Box>
-                  <Box paddingTop="50px" paddingLeft="250px"><text style={{color:'black', fontWeight:"bold"}}>Upload Document :  </text>
-               
+                  <Box paddingTop="50px" paddingLeft="250px">
+                    <text style={{ color: "black", fontWeight: "bold" }}>
+                      Upload Document :{" "}
+                    </text>
+
                     <input
                       type="file"
                       accept=".pdf, .doc, .docx, .png, .jpg, .jpeg"
@@ -421,7 +475,8 @@ export default function SearchAndUpload(props) {
                   </Box>
                   {selectedFile && (
                     <Box paddingTop="20px" paddingLeft="400px">
-                      {selectedFile.type && selectedFile.type.includes("image") ? (
+                      {selectedFile.type &&
+                      selectedFile.type.includes("image") ? (
                         <img src={filePreview} alt="File Preview" width="100" />
                       ) : (
                         <div>{uploadedFileName}</div>
@@ -429,18 +484,26 @@ export default function SearchAndUpload(props) {
                     </Box>
                   )}
                   <Box paddingTop="50px">
-                    <Box paddingBottom="50px" paddingLeft="250px" style={{color:'black', fontWeight:"bold"}}><text>File Name</text></Box>
+                    <Box
+                      paddingBottom="50px"
+                      paddingLeft="250px"
+                      style={{ color: "black", fontWeight: "bold" }}
+                    >
+                      <text>File Name</text>
+                    </Box>
                     <Box paddingLeft="250px">
                       <input
                         type="text"
                         value={uploadedFileName}
-                        onChange={(event) => setUploadedFileName(event.target.value)}
+                        onChange={(event) =>
+                          setUploadedFileName(event.target.value)
+                        }
                         placeholder="Enter file name"
                       />
                     </Box>
                     <Box>
                       <Box paddingLeft="450px" paddingTop="50px">
-                        <Button onClick={handleUploadClick} >Upload</Button>
+                        <Button onClick={handleUploadClick}>Upload</Button>
                       </Box>
                     </Box>
                   </Box>

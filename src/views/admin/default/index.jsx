@@ -44,6 +44,8 @@ import {
   MdBarChart,
   MdFileCopy,
 } from "react-icons/md";
+import { AiFillFolderOpen } from "react-icons/ai";
+
 import CheckTable from "views/admin/default/components/CheckTable";
 import ComplexTable from "views/admin/default/components/ComplexTable";
 import DailyTraffic from "views/admin/default/components/DailyTraffic";

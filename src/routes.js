@@ -8,6 +8,8 @@ import {
   MdLock,
   MdOutlineShoppingCart,
 } from "react-icons/md";
+import { AiFillFolderOpen } from "react-icons/ai";
+import { BsHouseDoorFill } from "react-icons/bs";
 
 // Admin Imports
 import MainDashboard from "views/admin/default";
@@ -45,10 +47,24 @@ const routes = [
   },*/}
   ,
   {
+    name: "Dashboard ",
+    layout: "/admin",
+    icon: <Icon as={BsHouseDoorFill} width='20px' height='20px' color='inherit' />,
+    path: "/dashboard",
+    component: DataTables,
+  },
+  {
     name: "My Documents ",
     layout: "/admin",
-    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={AiFillFolderOpen} width='20px' height='20px' color='inherit' />,
     path: "/documents",
+    component: DataTables,
+  },
+  {
+    name: "My Deals ",
+    layout: "/admin",
+    icon: <Icon as={BsHouseDoorFill} width='20px' height='20px' color='inherit' />,
+    path: "/deals",
     component: DataTables,
   },
   {/*
@@ -60,13 +76,13 @@ const routes = [
     component: Profile,
   },*/}
   ,
-  {
-    name: "Sign In",
-    layout: "/auth",
-    path: "/sign-in",
-    icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
-    component: SignInCentered,
-  },
+  // {
+  //   name: "Sign In",
+  //   layout: "/auth",
+  //   path: "/sign-in",
+  //   icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
+  //   component: SignInCentered,
+  // },
   {/*
   {
     name: "RTL Admin",
