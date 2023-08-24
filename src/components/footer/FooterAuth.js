@@ -43,11 +43,11 @@ export default function Footer() {
             href='https://www.simmmple.com?ref=horizon-chakra-free'
             target='_blank'
             fontWeight='700'>
-            Simmmple!
+            Pascal
           </Link>
         </Text>
       </Text>
-      <List display='flex'>
+      {/* <List display='flex'>
         <ListItem
           me={{
             base: "20px",
@@ -92,7 +92,7 @@ export default function Footer() {
             Blog
           </Link>
         </ListItem>
-      </List>
+      </List> */}
     </Flex>
   );
 }

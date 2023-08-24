@@ -60,7 +60,7 @@ function SignIn() {
 
       //Save the user object to async storage 
       await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
-      
+    
 
 
       
@@ -68,7 +68,7 @@ function SignIn() {
       // Handle the response here
 
       console.log("Login successful:", response.data);
-      history.push("/admin/default");
+      history.push("/admin/documents");
       console.log("Redirecting to dashboard route");
     } catch (error) {
       // Handle login error here
@@ -206,14 +206,14 @@ function SignIn() {
             maxW="100%"
             mt="0px"
           >
-            <Text fontWeight="400" fontSize="14px">
+            {/* <Text fontWeight="400" fontSize="14px">
               Not registered yet?
               <NavLink to="/auth/sign-up">
                 <Text as="span" ms="5px" fontWeight="500">
                   Create an Account
                 </Text>
               </NavLink>
-            </Text>
+            </Text> */}
           </Flex>
         </Flex>
       </Flex>
