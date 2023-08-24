@@ -22,36 +22,12 @@ import RTL from "views/admin/rtl";
 import SignInCentered from "views/auth/signIn";
 
 const routes = [
-  {/*
-  {
-    name: "Main Dashboard",
-    layout: "/admin",
-    path: "/default",
-    icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
-    component: MainDashboard,
-  },
-  {
-    name: "NFT Marketplace",
-    layout: "/admin",
-    path: "/nft-marketplace",
-    icon: (
-      <Icon
-        as={MdOutlineShoppingCart}
-        width='20px'
-        height='20px'
-        color='inherit'
-      />
-    ),
-    component: NFTMarketplace,
-    secondary: true,
-  },*/}
-  ,
   {
     name: "Dashboard ",
     layout: "/admin",
     icon: <Icon as={BsHouseDoorFill} width='20px' height='20px' color='inherit' />,
     path: "/dashboard",
-    component: DataTables,
+    component: MainDashboard,
   },
   {
     name: "My Documents ",
@@ -65,7 +41,7 @@ const routes = [
     layout: "/admin",
     icon: <Icon as={BsHouseDoorFill} width='20px' height='20px' color='inherit' />,
     path: "/deals",
-    component: DataTables,
+    component: '',
   },
   {/*
   {

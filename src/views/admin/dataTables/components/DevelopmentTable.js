@@ -239,16 +239,26 @@ export default function SearchAndUpload(props) {
             }
           );
           setData(response.data);
-          searchForAddress();
+          let dat = response.data;
+          const filteredAddresses = dat?.dealDocs?.filter(
+            (deal) =>
+              deal.address?.toLowerCase().includes(searchInput.toLowerCase()) ||
+              deal.clientName?.toLowerCase().includes(searchInput.toLowerCase())
+          );
+          setFilteredData(filteredAddresses);
           console.log("Documents fetched successfully:", response.data);
         }
+        else {
+          window.location.href = "/";
+        }
       } catch (error) {
+        window.location.href = "/";
         console.error("Error fetching user or documents:", error);
       }
     };
 
     fetchUserAndDocuments();
-  }, [fetchedDocuments]);
+  }, []);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -299,9 +309,10 @@ export default function SearchAndUpload(props) {
         </InputGroup>
         <Box mt="30px" />
         <Flex alignItems="stretch">
-          <Box p="10px" flex="1" width={'50%'}>
+          <Box p="10px" flex="1" width={"50%"}>
             {/* Render filtered data */}
-              {filteredData.map((deal, index) => (
+            {filteredData ? (
+              filteredData.map((deal, index) => (
                 <Flex
                   key={index}
                   align="center"
@@ -331,11 +342,14 @@ export default function SearchAndUpload(props) {
                     {loading ? "Loading..." : `${deal.length} Files`}
                   </Button>
                 </Flex>
-              ))}
+              ))
+              ) : (
+                <p>Loading data...</p>
+              )}
             
           </Box>
           <Divider orientation="vertical" mx="150px" borderColor="black" />
-          <Box p="10px" flex="1" width={'50%'}>
+          <Box p="10px" flex="1" >
             {/* Display selected address */}
             {selectedAddress && (
               <Flex align="center" justify="space-between">

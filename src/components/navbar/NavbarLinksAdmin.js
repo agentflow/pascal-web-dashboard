@@ -49,8 +49,10 @@ export default function HeaderLinks(props) {
         const userObj = JSON.parse(userJson);
         const userId = userObj.id;
         setUserName(userObj.name);
-		console.log(userObj)
-		const refreshToken = getRefreshToken();
+        const refreshToken = getRefreshToken();
+        console.log('REfresh', refreshToken);
+
+        // const refreshToken = getRefreshToken();
 
         axiosInstance
           .post("auth/logout", {
@@ -60,9 +62,8 @@ export default function HeaderLinks(props) {
             AsyncStorage.setItem("user", "");
             clearAuthTokens();
 			
-			// history.push("/auth/login");
-            // history.push("/auth/login");
-          });
+            window.location.href = "/";
+      });
       }
     } catch (error) {
       console.error("Error fetching user or documents:", error);
