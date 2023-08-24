@@ -23,8 +23,6 @@ import axios from "axios";
 import { setAuthTokens } from "axios-jwt";
 
 
-
-
 function SignIn() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);

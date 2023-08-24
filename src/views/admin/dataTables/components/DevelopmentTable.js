@@ -248,7 +248,7 @@ export default function SearchAndUpload(props) {
     };
 
     fetchUserAndDocuments();
-  }, []);
+  }, [fetchedDocuments]);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -299,10 +299,9 @@ export default function SearchAndUpload(props) {
         </InputGroup>
         <Box mt="30px" />
         <Flex alignItems="stretch">
-          <Box p="10px" flex="1">
+          <Box p="10px" flex="1" width={'50%'}>
             {/* Render filtered data */}
-
-              {fetchedDocuments.map((deal, index) => (
+              {filteredData.map((deal, index) => (
                 <Flex
                   key={index}
                   align="center"
@@ -336,7 +335,7 @@ export default function SearchAndUpload(props) {
             
           </Box>
           <Divider orientation="vertical" mx="150px" borderColor="black" />
-          <Box p="10px" flex="1">
+          <Box p="10px" flex="1" width={'50%'}>
             {/* Display selected address */}
             {selectedAddress && (
               <Flex align="center" justify="space-between">
