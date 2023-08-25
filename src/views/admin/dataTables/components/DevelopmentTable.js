@@ -247,8 +247,7 @@ export default function SearchAndUpload(props) {
           );
           setFilteredData(filteredAddresses);
           console.log("Documents fetched successfully:", response.data);
-        }
-        else {
+        } else {
           window.location.href = "/";
         }
       } catch (error) {
@@ -285,24 +284,23 @@ export default function SearchAndUpload(props) {
   return (
     <Box>
       <FormControl>
-        <InputGroup>
+        <InputGroup width="450px">
           <Input
             placeholder={`Search ${selectedOption}`}
             value={searchInput}
             onChange={handleSearchInputChange}
-            onKeyDown={handleKeyDown} // Add this line
+            onKeyDown={handleKeyDown}
             size="sm"
             height="40px"
             px="1"
-            width="600px"
+            borderRadius="9px"
+            backdropBlur={20}
+            backgroundColor={"#fff"}
           />
           <InputRightElement
-            pointerEvents="auto"
             onClick={handleSearchIconClick}
             cursor="pointer"
-            p="2px"
-            left="550px"
-            zIndex="1"
+            p="8px"
           >
             <AiOutlineSearch size="20px" />
           </InputRightElement>
@@ -343,13 +341,12 @@ export default function SearchAndUpload(props) {
                   </Button>
                 </Flex>
               ))
-              ) : (
-                <p>Loading data...</p>
-              )}
-            
+            ) : (
+              <p>Loading data...</p>
+            )}
           </Box>
           <Divider orientation="vertical" mx="150px" borderColor="black" />
-          <Box p="10px" flex="1" >
+          <Box p="10px" flex="1">
             {/* Display selected address */}
             {selectedAddress && (
               <Flex align="center" justify="space-between">
@@ -362,12 +359,13 @@ export default function SearchAndUpload(props) {
                 >
                   {selectedAddress}
                 </Text>
-                <Box marginLeft="60px" marginTop="-15px">
-                  <Button onClick={openAddModal}>
-                    <Box marginLeft="-41px">
-                      <AiFillPlusCircle size="41px" color="#3182CE" />
-                    </Box>
-                  </Button>
+                <Box
+                  marginLeft="20px"
+                  marginTop="-15px"
+                  onClick={openAddModal}
+                  style={{ cursor: "pointer" }}
+                >
+                  <AiFillPlusCircle size="40px" color="#3182CE" />
                 </Box>
               </Flex>
             )}
@@ -441,8 +439,7 @@ export default function SearchAndUpload(props) {
             display="flex"
             flexDirection="column"
             justifyContent="space-between"
-            width="50%"
-            position="fixed"
+            width="100%"
             right="0"
             height="100%"
             backgroundColor="white"
@@ -452,13 +449,13 @@ export default function SearchAndUpload(props) {
             <ModalCloseButton />
             <Box>
               <ModalHeader
-                paddingLeft="300px"
+                padding="20px"
                 color="274C77"
                 style={{ color: "Navy Blue", fontWeight: "bold" }}
               >
                 Add Document To Deal
               </ModalHeader>
-              <Box paddingLeft="250px" paddingTop="50px">
+              <Box paddingLeft="20px" paddingTop="50px">
                 <text style={{ color: "black", fontWeight: "bold" }}>
                   What step does this belong to :{" "}
                 </text>
@@ -475,7 +472,7 @@ export default function SearchAndUpload(props) {
               </Box>
               {selectedCategory && (
                 <Box>
-                  <Box paddingTop="50px" paddingLeft="250px">
+                  <Box paddingTop="50px" paddingLeft="20px">
                     <text style={{ color: "black", fontWeight: "bold" }}>
                       Upload Document :{" "}
                     </text>
@@ -487,7 +484,7 @@ export default function SearchAndUpload(props) {
                     />
                   </Box>
                   {selectedFile && (
-                    <Box paddingTop="20px" paddingLeft="400px">
+                    <Box paddingTop="20px" paddingLeft="20px">
                       {selectedFile.type &&
                       selectedFile.type.includes("image") ? (
                         <img src={filePreview} alt="File Preview" width="100" />
@@ -499,12 +496,12 @@ export default function SearchAndUpload(props) {
                   <Box paddingTop="50px">
                     <Box
                       paddingBottom="50px"
-                      paddingLeft="250px"
+                      paddingLeft="20px"
                       style={{ color: "black", fontWeight: "bold" }}
                     >
                       <text>File Name</text>
                     </Box>
-                    <Box paddingLeft="250px">
+                    <Box paddingLeft="20px">
                       <input
                         type="text"
                         value={uploadedFileName}
@@ -515,7 +512,7 @@ export default function SearchAndUpload(props) {
                       />
                     </Box>
                     <Box>
-                      <Box paddingLeft="450px" paddingTop="50px">
+                      <Box paddingLeft="20px" paddingTop="50px">
                         <Button onClick={handleUploadClick}>Upload</Button>
                       </Box>
                     </Box>

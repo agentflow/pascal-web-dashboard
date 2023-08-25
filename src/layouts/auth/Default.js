@@ -41,7 +41,7 @@ function AuthIllustration(props) {
             pt={{ lg: "0px", xl: "0px" }}
             w='fit-content'>
             
-          <Image src={logo} height="auto" width="250px" marginTop="100px"/>
+          <Image src={logo} height="auto" width="250px" marginTop="20px"/>
           </Flex>
         </NavLink>
         {children}
