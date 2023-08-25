@@ -19,7 +19,7 @@ export default function Project(props) {
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = "gray.400";
-  const brandColor = useColorModeValue("brand.500", "white");
+  const brandColor = useColorModeValue("#54739C", "white");
   const bg = useColorModeValue("white", "navy.700");
   return (
     <Card bg={bg} {...rest} p='14px'>

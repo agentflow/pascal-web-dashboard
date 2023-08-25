@@ -58,7 +58,7 @@ import { tableColumnsTopCreators } from "views/admin/marketplace/variables/table
 export default function Marketplace() {
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
-  const textColorBrand = useColorModeValue("brand.500", "white");
+  const textColorBrand = useColorModeValue("#54739C", "white");
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
       {/* Main Fields */}

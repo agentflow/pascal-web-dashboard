@@ -62,7 +62,7 @@ import tableDataComplex from "views/admin/default/variables/tableDataComplex.jso
 
 export default function UserReports() {
   // Chakra Color Mode
-  const brandColor = useColorModeValue("brand.500", "white");
+  const brandColor = useColorModeValue("#54739C", "white");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>

@@ -64,9 +64,7 @@ function SignIn() {
 
       // Handle the response here
 
-      console.log("Login successful:", response.data);
       history.push("/admin/documents");
-      console.log("Redirecting to dashboard route");
     } catch (error) {
       // Handle login error here
 
@@ -86,7 +84,7 @@ function SignIn() {
         justifyContent="center"
         mb={{ base: "30px", md: "60px" }}
         px={{ base: "25px", md: "0px" }}
-        mt={{ base: "40px", md: "10vh" }}
+        mt={{ base: "10px", md: "10vh" }}
         flexDirection="column"
       >
         
@@ -118,7 +116,7 @@ function SignIn() {
               fontWeight="500"
               mb="8px"
             >
-              Email<Text color="brand.500">*</Text>
+              Email<Text color="#54739C">*</Text>
             </FormLabel>
             <Input
               isRequired={true}
@@ -139,7 +137,7 @@ function SignIn() {
               fontWeight="500"
               display="flex"
             >
-              Password<Text color="brand.500">*</Text>
+              Password<Text color="#54739C">*</Text>
             </FormLabel>
             <InputGroup size="md">
               <Input
@@ -179,7 +177,7 @@ function SignIn() {
                 </FormLabel>
               </FormControl>
               <NavLink to="/auth/forgot-password">
-                <Text color="brand.500" fontSize="sm" w="124px" fontWeight="500">
+                <Text color="#54739C" fontSize="sm" w="124px" fontWeight="500">
                   Forgot password?
                 </Text>
               </NavLink>
@@ -189,6 +187,8 @@ function SignIn() {
               fontSize="sm"
               variant="brand"
               fontWeight="500"
+              color={"white"}
+              backgroundColor={"#54739C"}
               w="100%"
               h="50"
               mb="24px"

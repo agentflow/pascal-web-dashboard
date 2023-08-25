@@ -23,7 +23,7 @@ export const progressStyles = {
       variants: {
         table: (props) => ({
           field: {
-            bg: "brand.500",
+            bg: "#54739C",
             borderRadius: "16px",
             fontSize: "sm",
           },

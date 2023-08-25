@@ -5,11 +5,9 @@ import React from "react";
 import Footer from "components/footer/FooterAuth";
 // import logo from "assests/img/auth/log;
 import logo from '../../assets/img/auth/logoo.jpg';
-import FixedPlugin from "components/fixedPlugin/FixedPlugin";
 // Custom components
 import { NavLink } from "react-router-dom";
-// Assets
-import { FaChevronLeft } from "react-icons/fa";
+
 
 function AuthIllustration(props) {
   const { children, illustrationBackground } = props;
@@ -67,7 +65,6 @@ function AuthIllustration(props) {
         </Box>
         <Footer />
       </Flex>
-      <FixedPlugin />
     </Flex>
   );
 }
