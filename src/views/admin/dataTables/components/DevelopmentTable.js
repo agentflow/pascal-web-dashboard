@@ -24,6 +24,7 @@ import YourCustomIcon from "../../../../assets/img/auth/Share.png";
 import AnotherCustomIcon from "../../../../assets/img/auth/X.png";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
+
 export default function SearchAndUpload(props) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchInput, setSearchInput] = useState("");
@@ -92,6 +93,8 @@ export default function SearchAndUpload(props) {
   const handleSectionClick = (sectionTitle) => {
     setExpandedSection(expandedSection === sectionTitle ? null : sectionTitle);
   };
+  const [showPDF, setShowPDF] = useState(false);
+  const [filePDF, setFilePDF] = useState(null);
 
   const handleFileClick = async (document) => {
     try {
@@ -111,9 +114,14 @@ export default function SearchAndUpload(props) {
         );
 
         console.log("File fetched successfully:", response.data);
+        setShowPDF(true);
+        console.log("showPDF", showPDF);
+        let buildFileName = "http://docs.google.com/gview?url="+response.data+"&embedded=true";
+        setFilePDF(buildFileName);
 
-        const newWindow = window.open();
-        newWindow.document.write(response.data);
+        //const newWindow = window.open();
+        //newWindow.document.write(response.data);
+        
       } else {
         console.error("File key is null");
       }
@@ -347,6 +355,12 @@ export default function SearchAndUpload(props) {
           </Box>
           <Divider orientation="vertical" mx="150px" borderColor="black" />
           <Box p="10px" flex="1">
+          {showPDF && (
+                              // <iframe src={filePDF}/>
+<iframe src={filePDF}
+style={{width:'600px', height:'500px'}} frameborder="0" target="_blank"></iframe>
+                            )
+                              }
             {/* Display selected address */}
             {selectedAddress && (
               <Flex align="center" justify="space-between">
@@ -419,6 +433,8 @@ export default function SearchAndUpload(props) {
                                 height="15"
                               />
                             </Button>
+                         
+                            
                           </Flex>
                         </Flex>
                       </Box>
