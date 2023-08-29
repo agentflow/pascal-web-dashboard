@@ -116,7 +116,7 @@ export default function SearchAndUpload(props) {
         console.log("File fetched successfully:", response.data);
         setShowPDF(true);
         console.log("showPDF", showPDF);
-        let buildFileName = "http://docs.google.com/gview?url="+response.data+"&embedded=true";
+        let buildFileName = "https://docs.google.com/gview?url="+response.data+"&embedded=true";
         setFilePDF(buildFileName);
 
         //const newWindow = window.open();
