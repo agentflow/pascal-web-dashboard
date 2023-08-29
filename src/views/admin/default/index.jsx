@@ -1,22 +1,9 @@
 /*!
-  _   _  ___  ____  ___ ________  _   _   _   _ ___   
- | | | |/ _ \|  _ \|_ _|__  / _ \| \ | | | | | |_ _| 
- | |_| | | | | |_) || |  / / | | |  \| | | | | || | 
- |  _  | |_| |  _ < | | / /| |_| | |\  | | |_| || |
- |_| |_|\___/|_| \_\___/____\___/|_| \_|  \___/|___|
-                                                                                                                                                                                                                                                                                                                                       
-=========================================================
-* Horizon UI - v1.1.0
-=========================================================
-
-* Product Page: https://www.horizon-ui.com/
-* Copyright 2023 Horizon UI (https://www.horizon-ui.com/)
-
-* Designed and Coded by Simmmple
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+██████   █████  ███████  ██████  █████  ██      
+██   ██ ██   ██ ██      ██      ██   ██ ██      
+██████  ███████ ███████ ██      ███████ ██      
+██      ██   ██      ██ ██      ██   ██ ██      
+██      ██   ██ ███████  ██████ ██   ██ ███████                                                                                                                                                                                                                                                                                                                                    
 
 */
 
@@ -31,6 +18,10 @@ import {
   SimpleGrid,
   useColorModeValue,
 } from "@chakra-ui/react";
+import  { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { axiosInstance } from "../../../api";
+
 // Assets
 import Usa from "assets/img/dashboards/usa.png";
 // Custom components
@@ -61,7 +52,60 @@ import tableDataCheck from "views/admin/default/variables/tableDataCheck.json";
 import tableDataComplex from "views/admin/default/variables/tableDataComplex.json";
 
 export default function UserReports() {
-  // Chakra Color Mode
+  const [listings, setListings] = React.useState('');
+  const [grossCommissions, setGrossCommissions] = React.useState('');
+  const [grossTotal, setGrossTotal] = React.useState('');
+  const [dealsThisMonth, setDealsThisMonth] = React.useState('');
+  const [dealsThisMonthPercentage, setDealsThisMonthPercentage] = React.useState('');
+  const [deals, setDeals] = React.useState('');
+  const [clients, setClients] = React.useState('');
+
+  useEffect(() => {
+    const fetchUserAndDocuments = async () => {
+      try {
+        const userJson = await AsyncStorage.getItem("user");
+
+        if (userJson) {
+          const userObj = JSON.parse(userJson);
+          const userId = userObj.id;
+          const response = axiosInstance
+          .get('/users/buildDashboard/buildDashboard', {
+            params: {
+              userId: userObj.id,
+              isAgent: userObj.isAgent,
+              timezoneOffset: new Date().getTimezoneOffset(),
+            },
+          }).then(response => response.data)
+          .then(jsonData => {
+            console.log(jsonData);
+            setListings(jsonData.dealStats.listings);
+            setDeals(jsonData.dealStats.total);
+            setClients(jsonData.user.clients.length);
+            setGrossTotal('$' + jsonData.dealStats.grossTotal.toLocaleString());
+            setGrossCommissions('$' + jsonData.dealStats.grossCommissions.toLocaleString());
+            setDealsThisMonth(jsonData.dealStats.dealsThisMonth);
+            setDealsThisMonthPercentage(jsonData.dealStats.escrowPercentage+'%');
+            return jsonData;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+          
+          console.log("Dashboard fetched successfully:", response);
+        } else {
+          window.location.href = "/";
+        }
+      } catch (error) {
+        window.location.href = "/";
+        console.error("Error fetching user or dashboard:", error);
+      }
+    };
+
+    fetchUserAndDocuments();
+  }, []);
+
+
+
   const brandColor = useColorModeValue("#54739C", "white");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   return (
@@ -81,28 +125,27 @@ export default function UserReports() {
               }
             />
           }
-          name='Earnings'
-          value='$350.4'
+          name='Deals'
+          value={deals}
         />
-        <MiniStatistics
+ 
+                <MiniStatistics
           startContent={
             <IconBox
               w='56px'
               h='56px'
-              bg={boxBg}
-              icon={
-                <Icon w='32px' h='32px' as={MdAttachMoney} color={brandColor} />
-              }
+              bg='linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)'
+              icon={<Icon w='28px' h='28px' as={MdAddTask} color='white' />}
             />
           }
-          name='Spend this month'
-          value='$642.39'
+          name='Gross Commissions'
+          value={grossTotal}
         />
-        <MiniStatistics growth='+23%' name='Sales' value='$574.34' />
+        <MiniStatistics growth={dealsThisMonthPercentage} name='Deals this Month' value={dealsThisMonth} />
         <MiniStatistics
           endContent={
             <Flex me='-16px' mt='10px'>
-              <FormLabel htmlFor='balance'>
+              {/* <FormLabel htmlFor='balance'>
                 <Avatar src={Usa} />
               </FormLabel>
               <Select
@@ -114,23 +157,25 @@ export default function UserReports() {
                 <option value='usd'>USD</option>
                 <option value='eur'>EUR</option>
                 <option value='gba'>GBA</option>
-              </Select>
+              </Select> */}
             </Flex>
           }
-          name='Your balance'
-          value='$1,000'
+          name='Listings'
+          value={listings}
         />
-        <MiniStatistics
+       <MiniStatistics
           startContent={
             <IconBox
               w='56px'
               h='56px'
-              bg='linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)'
-              icon={<Icon w='28px' h='28px' as={MdAddTask} color='white' />}
+              bg={boxBg}
+              icon={
+                <Icon w='32px' h='32px' as={MdAttachMoney} color={brandColor} />
+              }
             />
           }
-          name='New Tasks'
-          value='154'
+          name='Commissions'
+          value={grossCommissions}
         />
         <MiniStatistics
           startContent={
@@ -143,23 +188,24 @@ export default function UserReports() {
               }
             />
           }
-          name='Total Projects'
-          value='2935'
+          name='Clients'
+          value={clients}
         />
       </SimpleGrid>
-
+      
       <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px' mb='20px'>
-        <TotalSpent />
-        <WeeklyRevenue />
+        {/* <TotalSpent mainCommission={123} /> */}
+        <WeeklyRevenue name={"Client Growth"} />
+        <WeeklyRevenue name={"Deal Growth"} />
       </SimpleGrid>
-      <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
+      {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
         <CheckTable columnsData={columnsDataCheck} tableData={tableDataCheck} />
         <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px'>
           <DailyTraffic />
           <PieCard />
         </SimpleGrid>
-      </SimpleGrid>
-      <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
+      </SimpleGrid> */}
+      {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
         <ComplexTable
           columnsData={columnsDataComplex}
           tableData={tableDataComplex}
@@ -168,7 +214,7 @@ export default function UserReports() {
           <Tasks />
           <MiniCalendar h='100%' minW='100%' selectRange={false} />
         </SimpleGrid>
-      </SimpleGrid>
+      </SimpleGrid> */}
     </Box>
   );
 }

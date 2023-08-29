@@ -10,7 +10,7 @@ import {
 // Custom components
 import Card from "components/card/Card.js";
 import LineChart from "components/charts/LineChart";
-import React from "react";
+import React, { useEffect } from "react";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { MdBarChart, MdOutlineCalendarToday } from "react-icons/md";
 // Assets
@@ -22,8 +22,14 @@ import {
 
 export default function TotalSpent(props) {
   const { ...rest } = props;
+  console.log(props.mainCommmission);
 
   // Chakra Color Mode
+
+  useEffect(() => {
+    console.log(props.mainCommmission);
+  }, [props.mainCommmission]);
+
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = useColorModeValue("secondaryGray.600", "white");
@@ -48,7 +54,7 @@ export default function TotalSpent(props) {
       {...rest}>
       <Flex justify='space-between' ps='0px' pe='20px' pt='5px'>
         <Flex align='center' w='100%'>
-          <Button
+          {/* <Button
             bg={boxBg}
             fontSize='sm'
             fontWeight='500'
@@ -60,8 +66,8 @@ export default function TotalSpent(props) {
               me='4px'
             />
             This month
-          </Button>
-          <Button
+          </Button> */}
+          {/* <Button
             ms='auto'
             align='center'
             justifyContent='center'
@@ -75,7 +81,7 @@ export default function TotalSpent(props) {
             borderRadius='10px'
             {...rest}>
             <Icon as={MdBarChart} color={iconColor} w='24px' h='24px' />
-          </Button>
+          </Button> */}
         </Flex>
       </Flex>
       <Flex w='100%' flexDirection={{ base: "column", lg: "row" }}>
@@ -86,7 +92,7 @@ export default function TotalSpent(props) {
             textAlign='start'
             fontWeight='700'
             lineHeight='100%'>
-            $37.5K
+            ${props.mainCommmission}
           </Text>
           <Flex align='center' mb='20px'>
             <Text

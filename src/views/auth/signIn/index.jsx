@@ -64,7 +64,7 @@ function SignIn() {
 
       // Handle the response here
 
-      history.push("/admin/documents");
+      history.push("/admin/dashboard");
     } catch (error) {
       // Handle login error here
 

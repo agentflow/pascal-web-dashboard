@@ -24,7 +24,6 @@ import YourCustomIcon from "../../../../assets/img/auth/Share.png";
 import AnotherCustomIcon from "../../../../assets/img/auth/X.png";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-
 export default function SearchAndUpload(props) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchInput, setSearchInput] = useState("");
@@ -45,6 +44,7 @@ export default function SearchAndUpload(props) {
   const [selectedType, setSelectedType] = useState("{deal.type}");
   const [filePreview, setFilePreview] = useState(null);
   const history = useHistory();
+  const [dealStep, setDealStep] = useState(null);
 
   const handleSearchInputChange = (event) => {
     setSearchInput(event.target.value);
@@ -92,6 +92,7 @@ export default function SearchAndUpload(props) {
 
   const handleSectionClick = (sectionTitle) => {
     setExpandedSection(expandedSection === sectionTitle ? null : sectionTitle);
+    setDealStep(sectionTitle);
   };
   const [showPDF, setShowPDF] = useState(false);
   const [filePDF, setFilePDF] = useState(null);
@@ -116,12 +117,14 @@ export default function SearchAndUpload(props) {
         console.log("File fetched successfully:", response.data);
         setShowPDF(true);
         console.log("showPDF", showPDF);
-        let buildFileName = "https://docs.google.com/gview?url="+response.data+"&embedded=true";
+        let buildFileName =
+          "https://docs.google.com/gview?url=" +
+          response.data +
+          "&embedded=true";
         setFilePDF(buildFileName);
 
         //const newWindow = window.open();
         //newWindow.document.write(response.data);
-        
       } else {
         console.error("File key is null");
       }
@@ -274,15 +277,26 @@ export default function SearchAndUpload(props) {
   };
 
   const handleDeleteClick = async (item) => {
+    console.log('item', item)
     try {
       const response = await axiosInstance.post("/deals/deleteDealFile", {
         key: item.file,
         dealId: selectedDealId,
-        dealStep: selectedCategory,
+        dealStep: dealStep,
       });
 
       if (response.data) {
         console.log("File Deleted Successfully");
+        const updatedFetchedDocuments = fetchedDocuments.map((step) => {
+          if (step.title === selectedCategory) {
+            return {
+              ...step,
+              content: step.content.filter((file) => file.file !== item.file),
+            };
+          }
+          return step;
+        }
+        );
       }
     } catch (error) {
       console.error("Error deleting file:", error);
@@ -355,12 +369,15 @@ export default function SearchAndUpload(props) {
           </Box>
           <Divider orientation="vertical" mx="150px" borderColor="black" />
           <Box p="10px" flex="1">
-          {showPDF && (
-                              // <iframe src={filePDF}/>
-<iframe src={filePDF}
-style={{width:'600px', height:'500px'}} frameborder="0" target="_blank"></iframe>
-                            )
-                              }
+            {showPDF && (
+              // <iframe src={filePDF}/>
+              <iframe
+                src={filePDF}
+                style={{ width: "600px", height: "500px" }}
+                frameborder="0"
+                target="_blank"
+              ></iframe>
+            )}
             {/* Display selected address */}
             {selectedAddress && (
               <Flex align="center" justify="space-between">
@@ -433,8 +450,6 @@ style={{width:'600px', height:'500px'}} frameborder="0" target="_blank"></iframe
                                 height="15"
                               />
                             </Button>
-                         
-                            
                           </Flex>
                         </Flex>
                       </Box>

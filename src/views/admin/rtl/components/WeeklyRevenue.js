@@ -33,6 +33,7 @@ export default function WeeklyRevenue(props) {
     { bg: "whiteAlpha.100" }
   );
   return (
+    <Overlay>
     <Card align='center' direction='column' w='100%' {...rest}>
       <Flex align='center' w='100%' px='15px' py='10px'>
         <Text
@@ -41,7 +42,7 @@ export default function WeeklyRevenue(props) {
           fontSize='xl'
           fontWeight='700'
           lineHeight='100%'>
-          Weekly Revenue
+          Client Growth
         </Text>
         <Button
           align='center'
@@ -58,7 +59,7 @@ export default function WeeklyRevenue(props) {
           <Icon as={MdBarChart} color={iconColor} w='24px' h='24px' />
         </Button>
       </Flex>
-
+  
       <Box h='240px' mt='auto'>
         <BarChart
           chartData={barChartDataConsumption}
@@ -66,5 +67,7 @@ export default function WeeklyRevenue(props) {
         />
       </Box>
     </Card>
+    <Text>Coming Soon</Text>
+  </Overlay>
   );
 }
