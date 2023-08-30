@@ -5,6 +5,7 @@ import ms from 'ms';
 import axios from 'axios';
 
 const BASE_URL = 'https://agentflow-v1.herokuapp.com/v1/'
+// const BASE_URL = 'http://localhost:3000/v1/'
 
 // 1. Create an axios instance that you wish to apply the interceptor to
 export const axiosInstance = axios.create({ baseURL: BASE_URL })

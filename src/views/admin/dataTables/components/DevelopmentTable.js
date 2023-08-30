@@ -83,7 +83,6 @@ export default function SearchAndUpload(props) {
       type == 'buyer' ? setSelectedType("buyer") : setSelectedType("seller");
       setSelectedDealId(dealId);
 
-      console.log("Documents fetched successfully:", response.data);
     } catch (error) {
       setLoading(false);
       console.error("Error fetching documents for deal:", error);
@@ -115,7 +114,7 @@ export default function SearchAndUpload(props) {
         );
 
         console.log("File fetched successfully:", response.data);
-        // setShowPDF(true);
+        setShowPDF(true);
         console.log("showPDF", showPDF);
         // let buildFileName =
         //   "https://docs.google.com/gview?url=" +
@@ -270,7 +269,6 @@ export default function SearchAndUpload(props) {
               deal.clientName?.toLowerCase().includes(searchInput.toLowerCase())
           );
           setFilteredData(filteredAddresses);
-          console.log("Documents fetched successfully:", response.data);
         } else {
           window.location.href = "/";
         }
@@ -306,7 +304,6 @@ export default function SearchAndUpload(props) {
               deal.clientName?.toLowerCase().includes(searchInput.toLowerCase())
           );
           setFilteredData(filteredAddresses);
-          console.log("Documents fetched successfully:", response.data);
         } else {
           window.location.href = "/";
         }
@@ -327,11 +324,62 @@ export default function SearchAndUpload(props) {
 
   const handleDeleteClick = async (item) => {
     console.log('item', item)
+    let dealStepName = '';
+    if(dealStep == 'Offer(s) Received'){
+      dealStepName = 'offersReceived'
+    }
+    if(dealStep == 'Property Prepping'){
+      dealStepName = 'propertyPrepping'
+    }
+    if(dealStep == 'Photography'){
+      dealStepName = 'photography'
+    }
+    if(dealStep == 'Live On the MLS'){
+      dealStepName = 'liveOnMls'
+    }
+    if(dealStep == 'Listing Agreement Signed'){
+      dealStepName = 'listingAgreementSigned'
+    }
+
+    if(dealStep == 'Loan Contingencies'){
+      dealStepName = 'loanContingencies'
+    }
+    if(dealStep == 'Appraisal Contingencies'){
+      dealStepName = 'appraisalContingencies'
+    }
+    if(dealStep == 'Physical Contingencies'){
+      dealStepName = 'physicalContingencies'
+    }
+    if(dealStep == 'Earnest Deposit Sent'){
+      dealStepName = 'earnestDepositSent'
+    }
+    if(dealStep == 'Open Escrow'){
+      dealStepName = 'openEscrow'
+    }
+    if(dealStep == 'Offer(s) Sent'){
+      dealStepName = 'offersSent'
+    }
+    if(dealStep == 'Offer Accepted'){
+      dealStepName = 'offerAccepted'
+    }
+    if(dealStep == 'Final Walkthrough'){
+      dealStepName = 'finalWalkthrough'
+    }
+    if(dealStep == 'Recording of Title'){
+      dealStepName = 'recordingOfTitle'
+    }
+    if(dealStep == 'Utilities & Contacts'){
+      dealStepName = 'utilitiesAndContacts'
+    }
+    if(dealStep == 'Close of Escrow'){
+      dealStepName = 'closeOfEscrow'
+    }
+
     try {
       const response = await axiosInstance.post("/deals/deleteDealFile", {
         key: item.file,
         dealId: selectedDealId,
-        dealStep: dealStep,
+        dealStep: dealStepName,
       });
 
       if (response.data) {
@@ -345,6 +393,7 @@ export default function SearchAndUpload(props) {
           }
           return step;
         });
+        console.log('updatedFetchedDocuments', updatedFetchedDocuments)
       
         // Update the fetchedDocuments state with the updated array
         setFetchedDocuments(updatedFetchedDocuments);
@@ -450,15 +499,7 @@ export default function SearchAndUpload(props) {
 
           <Divider orientation="vertical" mx="150px" borderColor="black" />
           <Box p="10px" flex="1">
-            {showPDF && (
-              // <iframe src={filePDF}/>
-              <iframe
-                src={filePDF}
-                style={{ width: "600px", height: "500px" }}
-                frameborder="0"
-                target="_blank"
-              ></iframe>
-            )}
+         
             {/* Display selected address */}
             {selectedAddress && (
               <Flex align="center" justify="space-between">
@@ -543,6 +584,14 @@ export default function SearchAndUpload(props) {
               </Box>
             ))}
           </Box>
+          {showPDF && (
+              // <iframe src={filePDF}/>
+              <iframe
+                src={filePDF}
+                frameborder="0"
+                target="_blank"
+              ></iframe>
+            )}
         </Flex>
       </FormControl>
 
@@ -616,7 +665,7 @@ export default function SearchAndUpload(props) {
                     >
                       <text>File Name</text>
                     </Box>
-                    <Box paddingLeft="20px">
+                    <Box paddingLeft="20px" >
                       <input
                         type="text"
                         value={uploadedFileName}
@@ -626,8 +675,8 @@ export default function SearchAndUpload(props) {
                       />
                     </Box>
                     <Box>
-                      <Box paddingLeft="20px" paddingTop="50px">
-                        <Button onClick={handleUploadClick}>Upload</Button>
+                      <Box paddingLeft="150px" paddingTop="50px" >
+                        <Button onClick={handleUploadClick} backgroundColor={'rgba(255,255,255,0.2)'}>Upload</Button>
                       </Box>
                     </Box>
                   </Box>
