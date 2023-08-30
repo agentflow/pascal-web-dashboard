@@ -88,6 +88,7 @@ export default function UserReports() {
             return jsonData;
           })
           .catch(error => {
+            window.location.href = "/";
             console.log(error);
           });
           

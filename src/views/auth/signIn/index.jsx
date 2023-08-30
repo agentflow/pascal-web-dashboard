@@ -176,11 +176,11 @@ function SignIn() {
                   Keep me logged in
                 </FormLabel>
               </FormControl>
-              <NavLink to="/auth/forgot-password">
+              {/* <NavLink to="/auth/forgot-password">
                 <Text color="#54739C" fontSize="sm" w="124px" fontWeight="500">
                   Forgot password?
                 </Text>
-              </NavLink>
+              </NavLink> */}
             </Flex>
             <Button
               onClick={handleSignIn}

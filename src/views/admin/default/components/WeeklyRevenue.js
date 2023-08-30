@@ -20,7 +20,6 @@ import { Overlay } from 'react-overlays';
 
 export default function WeeklyRevenue(props) {
   const { ...rest } = props;
-  console.log(props.name);
 
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
