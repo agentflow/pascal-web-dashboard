@@ -35,13 +35,13 @@ const routes = [
     path: "/documents",
     component: DataTables,
   },
-  // {
-  //   name: "My Deals ",
-  //   layout: "/admin",
-  //   icon: <Icon as={BsHouseDoorFill} width='20px' height='20px' color='inherit' />,
-  //   path: "/deals",
-  //   component: '',
-  // },
+  {
+    name: "My Deals ",
+    layout: "/admin",
+    icon: <Icon as={BsHouseDoorFill} width='20px' height='20px' color='inherit' />,
+    path: "/deals",
+    component: NFTMarketplace,
+  },
   {/*
   {
     name: "Profile",

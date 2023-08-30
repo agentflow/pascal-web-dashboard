@@ -36,6 +36,9 @@ import {
   MdFileCopy,
 } from "react-icons/md";
 import { AiFillFolderOpen } from "react-icons/ai";
+import TableTopCreators from "views/admin/marketplace/components/TableTopCreators";
+import tableDataTopCreators from "views/admin/marketplace/variables/tableDataTopCreators.json";
+import { tableColumnsTopCreators } from "views/admin/marketplace/variables/tableColumnsTopCreators";
 
 import CheckTable from "views/admin/default/components/CheckTable";
 import ComplexTable from "views/admin/default/components/ComplexTable";
@@ -193,7 +196,10 @@ export default function UserReports() {
           value={clients}
         />
       </SimpleGrid>
-      
+      <TableTopCreators
+              tableData={tableDataTopCreators}
+              columnsData={tableColumnsTopCreators}
+            />
       <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px' mb='20px'>
         {/* <TotalSpent mainCommission={123} /> */}
         <WeeklyRevenue name={"Client Growth"} />

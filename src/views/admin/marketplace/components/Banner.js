@@ -11,14 +11,14 @@ export default function Banner() {
   return (
     <Flex
       direction='column'
-      bgImage={banner}
+      bgColor={{ base: "rgb(255, 255, 255)" }}
       bgSize='cover'
       py={{ base: "30px", md: "56px" }}
       px={{ base: "30px", md: "64px" }}
       borderRadius='30px'>
       <Text
         fontSize={{ base: "24px", md: "34px" }}
-        color='white'
+        color='black'
         mb='14px'
         maxW={{
           base: "100%",
@@ -30,11 +30,11 @@ export default function Banner() {
         }}
         fontWeight='700'
         lineHeight={{ base: "32px", md: "42px" }}>
-        Discover, collect, and sell extraordinary NFTs
+        View all your deals, in one place
       </Text>
       <Text
         fontSize='md'
-        color='#E3DAFF'
+        color='black'
         maxW={{
           base: "100%",
           md: "64%",
@@ -46,10 +46,9 @@ export default function Banner() {
         fontWeight='500'
         mb='40px'
         lineHeight='28px'>
-        Enter in this creative world. Discover now the latest NFTs or start
-        creating your own!
+        Coming Soon..
       </Text>
-      <Flex align='center'>
+      {/* <Flex align='center'>
         <Button
           bg='white'
           color='black'
@@ -68,7 +67,7 @@ export default function Banner() {
             Watch video
           </Text>
         </Link>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 }

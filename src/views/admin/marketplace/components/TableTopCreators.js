@@ -48,7 +48,10 @@ function TopCreatorTable(props) {
       <Flex
         direction='column'
         w='100%'
-        overflowX={{ sm: "scroll", lg: "hidden" }}>
+        mt={'20px'}
+        overflowX={{ sm: "scroll", lg: "hidden" }}
+        style={{ position: 'relative' }} // Ensure the overlay covers this component
+        >
         <Flex
           align={{ sm: "flex-start", lg: "center" }}
           justify='space-between'
@@ -58,9 +61,10 @@ function TopCreatorTable(props) {
           mb='10px'
           boxShadow='0px 40px 58px -20px rgba(112, 144, 176, 0.26)'>
           <Text color={textColor} fontSize='xl' fontWeight='600'>
-            Top Creators
+            Top Agents on Pascal
           </Text>
-          <Button variant='action'>See all</Button>
+          <Text>Coming Soon</Text>
+          {/* <Button variant='action'>Coming Soon</Button> */}
         </Flex>
         <Table {...getTableProps()} variant='simple' color='gray.500'>
           <Thead>
@@ -92,7 +96,7 @@ function TopCreatorTable(props) {
                 <Tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     let data = "";
-                    if (cell.column.Header === "Name") {
+                    if (cell.column.Header === "Agent") {
                       data = (
                         <Flex align='center'>
                           <Avatar
@@ -109,7 +113,7 @@ function TopCreatorTable(props) {
                           </Text>
                         </Flex>
                       );
-                    } else if (cell.column.Header === "Artworks") {
+                    } else if (cell.column.Header === "Deals1") {
                       data = (
                         <Text
                           color={textColorSecondary}
@@ -118,7 +122,7 @@ function TopCreatorTable(props) {
                           {cell.value}
                         </Text>
                       );
-                    } else if (cell.column.Header === "Rating") {
+                    } else if (cell.column.Header === "Rating1") {
                       data = (
                         <Box>
                           <Progress

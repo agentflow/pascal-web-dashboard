@@ -24,7 +24,6 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { AiOutlineCloudDownload } from "react-icons/ai";
 import { BsXLg } from "react-icons/bs";
 
-
 export default function SearchAndUpload(props) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchInput, setSearchInput] = useState("");
@@ -80,9 +79,8 @@ export default function SearchAndUpload(props) {
       setLoading(false);
       setSelectedDealAddress(address);
       setSelectedAddress(address);
-      type == 'buyer' ? setSelectedType("buyer") : setSelectedType("seller");
+      type == "buyer" ? setSelectedType("buyer") : setSelectedType("seller");
       setSelectedDealId(dealId);
-
     } catch (error) {
       setLoading(false);
       console.error("Error fetching documents for deal:", error);
@@ -166,7 +164,6 @@ export default function SearchAndUpload(props) {
     }
   };
 
-
   const sellerCategories = [
     { title: "Listing Agreement Signed", value: "listingAgreementSigned" },
     { title: "Offer(s) Sent", value: "offersSent" },
@@ -185,7 +182,7 @@ export default function SearchAndUpload(props) {
     { title: "Photography", value: "photography" },
     { title: "Live On the MLS", value: "liveOnMls" },
   ];
-  
+
   const buyerCategories = [
     { title: "Offer(s) Sent", value: "offersSent" },
     { title: "Offer Accepted", value: "offerAccepted" },
@@ -245,39 +242,38 @@ export default function SearchAndUpload(props) {
       }
     }
   };
-    const fetchUserAndDocuments = async () => {
-      try {
-        const userJson = await AsyncStorage.getItem("user");
+  const fetchUserAndDocuments = async () => {
+    try {
+      const userJson = await AsyncStorage.getItem("user");
 
-        if (userJson) {
-          const userObj = JSON.parse(userJson);
-          const userId = userObj.id;
-          setUserId(userId);
-          const response = await axiosInstance.get(
-            "/users/getDocuments/getDocuments",
-            {
-              params: {
-                userId: userId,
-              },
-            }
-          );
-          setData(response.data);
-          let dat = response.data;
-          const filteredAddresses = dat?.dealDocs?.filter(
-            (deal) =>
-              deal.address?.toLowerCase().includes(searchInput.toLowerCase()) ||
-              deal.clientName?.toLowerCase().includes(searchInput.toLowerCase())
-          );
-          setFilteredData(filteredAddresses);
-        } else {
-          window.location.href = "/";
-        }
-      } catch (error) {
+      if (userJson) {
+        const userObj = JSON.parse(userJson);
+        const userId = userObj.id;
+        setUserId(userId);
+        const response = await axiosInstance.get(
+          "/users/getDocuments/getDocuments",
+          {
+            params: {
+              userId: userId,
+            },
+          }
+        );
+        setData(response.data);
+        let dat = response.data;
+        const filteredAddresses = dat?.dealDocs?.filter(
+          (deal) =>
+            deal.address?.toLowerCase().includes(searchInput.toLowerCase()) ||
+            deal.clientName?.toLowerCase().includes(searchInput.toLowerCase())
+        );
+        setFilteredData(filteredAddresses);
+      } else {
         window.location.href = "/";
-        console.error("Error fetching user or documents:", error);
       }
-    };
-
+    } catch (error) {
+      window.location.href = "/";
+      console.error("Error fetching user or documents:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchUserAndDocuments = async () => {
@@ -323,56 +319,55 @@ export default function SearchAndUpload(props) {
   };
 
   const handleDeleteClick = async (item) => {
-    console.log('item', item)
-    let dealStepName = '';
-    if(dealStep == 'Offer(s) Received'){
-      dealStepName = 'offersReceived'
+    let dealStepName = "";
+    if (dealStep == "Offer(s) Received") {
+      dealStepName = "offersReceived";
     }
-    if(dealStep == 'Property Prepping'){
-      dealStepName = 'propertyPrepping'
+    if (dealStep == "Property Prepping") {
+      dealStepName = "propertyPrepping";
     }
-    if(dealStep == 'Photography'){
-      dealStepName = 'photography'
+    if (dealStep == "Photography") {
+      dealStepName = "photography";
     }
-    if(dealStep == 'Live On the MLS'){
-      dealStepName = 'liveOnMls'
+    if (dealStep == "Live On the MLS") {
+      dealStepName = "liveOnMls";
     }
-    if(dealStep == 'Listing Agreement Signed'){
-      dealStepName = 'listingAgreementSigned'
+    if (dealStep == "Listing Agreement Signed") {
+      dealStepName = "listingAgreementSigned";
     }
 
-    if(dealStep == 'Loan Contingencies'){
-      dealStepName = 'loanContingencies'
+    if (dealStep == "Loan Contingencies") {
+      dealStepName = "loanContingencies";
     }
-    if(dealStep == 'Appraisal Contingencies'){
-      dealStepName = 'appraisalContingencies'
+    if (dealStep == "Appraisal Contingencies") {
+      dealStepName = "appraisalContingencies";
     }
-    if(dealStep == 'Physical Contingencies'){
-      dealStepName = 'physicalContingencies'
+    if (dealStep == "Physical Contingencies") {
+      dealStepName = "physicalContingencies";
     }
-    if(dealStep == 'Earnest Deposit Sent'){
-      dealStepName = 'earnestDepositSent'
+    if (dealStep == "Earnest Deposit Sent") {
+      dealStepName = "earnestDepositSent";
     }
-    if(dealStep == 'Open Escrow'){
-      dealStepName = 'openEscrow'
+    if (dealStep == "Open Escrow") {
+      dealStepName = "openEscrow";
     }
-    if(dealStep == 'Offer(s) Sent'){
-      dealStepName = 'offersSent'
+    if (dealStep == "Offer(s) Sent") {
+      dealStepName = "offersSent";
     }
-    if(dealStep == 'Offer Accepted'){
-      dealStepName = 'offerAccepted'
+    if (dealStep == "Offer Accepted") {
+      dealStepName = "offerAccepted";
     }
-    if(dealStep == 'Final Walkthrough'){
-      dealStepName = 'finalWalkthrough'
+    if (dealStep == "Final Walkthrough") {
+      dealStepName = "finalWalkthrough";
     }
-    if(dealStep == 'Recording of Title'){
-      dealStepName = 'recordingOfTitle'
+    if (dealStep == "Recording of Title") {
+      dealStepName = "recordingOfTitle";
     }
-    if(dealStep == 'Utilities & Contacts'){
-      dealStepName = 'utilitiesAndContacts'
+    if (dealStep == "Utilities & Contacts") {
+      dealStepName = "utilitiesAndContacts";
     }
-    if(dealStep == 'Close of Escrow'){
-      dealStepName = 'closeOfEscrow'
+    if (dealStep == "Close of Escrow") {
+      dealStepName = "closeOfEscrow";
     }
 
     try {
@@ -393,8 +388,8 @@ export default function SearchAndUpload(props) {
           }
           return step;
         });
-        console.log('updatedFetchedDocuments', updatedFetchedDocuments)
-      
+        console.log("updatedFetchedDocuments", updatedFetchedDocuments);
+
         // Update the fetchedDocuments state with the updated array
         setFetchedDocuments(updatedFetchedDocuments);
       }
@@ -429,77 +424,103 @@ export default function SearchAndUpload(props) {
         </InputGroup>
         <Box mt="30px" />
         <Flex alignItems="stretch">
-        <Box p="10px" flex="1" width="50%">
-  {filteredData ? (
-    filteredData.map((deal, index) => (
-      <Flex
-      key={index}
-      align="center"
-      justify="space-between"
-      alignContent={"center"}
-      mb="20px"
-      w={"100%"}
-      // backgroundColor="white"
-      onClick={() => handleButtonClick(deal.dealId, deal.address, deal.type)}
-      style={{ cursor: 'pointer', borderRadius: '8px', padding: '10px' }}
-    >
-      <Flex
-        key={index}
-        align="center"
-        justify="space-between"
-        alignContent={"center"}
-        mb="20px"
-        w={"75%"}
-        // backgroundColor="white"
+          <Box p="10px" flex="1" width="50%">
+            {filteredData ? (
+              filteredData.map((deal, index) => (
+                <Flex
+                  key={deal.id}
+                  align="center"
+                  justify="space-between"
+                  alignContent={"center"}
+                  mb="20px"
+                  w={"100%"}
+                  // backgroundColor="white"
+                  onClick={() =>
+                    handleButtonClick(deal.dealId, deal.address, deal.type)
+                  }
+                  style={{
+                    cursor: "pointer",
+                    borderRadius: "8px",
+                    padding: "10px",
+                  }}
+                >
+                  <Flex
+                    key={deal.id}
+                    align="center"
+                    justify="space-between"
+                    alignContent={"center"}
+                    mb="20px"
+                    w={"75%"}
+                    // backgroundColor="white"
 
-        onClick={() => handleButtonClick(deal.dealId, deal.address, deal.type)}
-        style={{ cursor: 'pointer', borderRadius: '8px', padding: '10px' }}
-      >
-        <Box flex="1">
-          <Text
-            fontSize="lg"
-            fontWeight={
-              selectedDealAddress === deal.address ? 'bold' : 'normal'
-            }
-            whiteSpace="nowrap"
-            overflow="hidden"
-            textOverflow="ellipsis"
-          >
-            {deal.address.split(',')[0] + ', ' + deal.address.split(',')[1]}
-          </Text>
-          <Text style={{ textTransform: 'capitalize' }}>
-            {deal.type} deal
-          </Text>
-          <Text>Client Name: {deal.clientName}</Text>
-        </Box>
-        </Flex>
-        <Flex
-        key={index}
-        align="center"
-        justify="space-between"
-        alignContent={"center"}
-        mb="20px"
-        h={"100%"}
-        // backgroundColor="white"
+                    onClick={() =>
+                      handleButtonClick(deal.dealId, deal.address, deal.type)
+                    }
+                    style={{
+                      cursor: "pointer",
+                      borderRadius: "8px",
+                      padding: "10px",
+                    }}
+                  >
+                    <Box flex="1">
+                      <Text
+                        fontSize="lg"
+                        fontWeight={
+                          selectedDealAddress === deal.address
+                            ? "bold"
+                            : "normal"
+                        }
+                        whiteSpace="nowrap"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                      >
+                        {deal.address.split(",")[0] +
+                          ", " +
+                          deal.address.split(",")[1]}
+                      </Text>
+                      <Text style={{ textTransform: "capitalize" }}>
+                        {deal.type} deal
+                      </Text>
+                      <Text>Client Name: {deal.clientName}</Text>
+                    </Box>
+                  </Flex>
+                  <Flex
+                    key={deal.id}
+                    align="center"
+                    justify="space-between"
+                    alignContent={"center"}
+                    mb="20px"
+                    h={"100%"}
+                    // backgroundColor="white"
 
-        onClick={() => handleButtonClick(deal.dealId, deal.address, deal.type)}
-        style={{ cursor: 'pointer', borderRadius: '8px', padding: '10px' }}
-      >
-        <Text style={{ flex: 'none', width: '200px', textAlign: 'right' }}>
-          {loading ? 'Loading...' : `${deal.length} Files`}
-        </Text>
-      </Flex>
-      </Flex>
-    ))
-  ) : (
-    <p>Loading data...</p>
-  )}
-</Box>
-
+                    onClick={() =>
+                      handleButtonClick(deal.dealId, deal.address, deal.type)
+                    }
+                    style={{
+                      cursor: "pointer",
+                      borderRadius: "8px",
+                      padding: "10px",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        flex: "none",
+                        width: "200px",
+                        textAlign: "right",
+                      }}
+                    >
+                      {loading ? "Loading..." : `${deal.length} Files`}
+                    </Text>
+                  </Flex>
+                </Flex>
+              ))
+            ) : (
+              <p>Loading data...</p>
+            )}
+          </Box>
 
           <Divider orientation="vertical" mx="150px" borderColor="black" />
           <Box p="10px" flex="1">
-         
             {/* Display selected address */}
             {selectedAddress && (
               <Flex align="center" justify="space-between">
@@ -510,8 +531,9 @@ export default function SearchAndUpload(props) {
                   whiteSpace="nowrap"
                   maxWidth="100%"
                 >
-                  {selectedAddress.split(',')[0] + ', ' + selectedAddress.split(',')[1]}
-
+                  {selectedAddress.split(",")[0] +
+                    ", " +
+                    selectedAddress.split(",")[1]}
                 </Text>
                 <Box
                   marginLeft="20px"
@@ -526,14 +548,14 @@ export default function SearchAndUpload(props) {
 
             {/* Render fetched documents */}
             {fetchedDocuments.map((step, index) => (
-              <Box key={index} mt="20px" marginbottom="100px">
+              <Box key={step.name} mt="20px" marginbottom="100px">
                 <Button onClick={() => handleSectionClick(step.title)}>
                   {step.title}
                 </Button>
                 {expandedSection === step.title && (
                   <Box ml="20px">
                     {step.content.map((document, docIndex) => (
-                      <Box key={docIndex}>
+                      <Box key={document.name}>
                         <Flex align="center" justify="space-between">
                           <Text
                             fontSize="md"
@@ -567,7 +589,7 @@ export default function SearchAndUpload(props) {
                               onClick={() => handleDeleteClick(document)}
                               ml="8px"
                             >
-                            <Icon as={BsXLg} />
+                              <Icon as={BsXLg} />
                               {/* <img
                                 src={AnotherCustomIcon}
                                 alt="Delete Icon"
@@ -585,13 +607,9 @@ export default function SearchAndUpload(props) {
             ))}
           </Box>
           {showPDF && (
-              // <iframe src={filePDF}/>
-              <iframe
-                src={filePDF}
-                frameborder="0"
-                target="_blank"
-              ></iframe>
-            )}
+            // <iframe src={filePDF}/>
+            <iframe src={filePDF} frameborder="0" target="_blank"></iframe>
+          )}
         </Flex>
       </FormControl>
 
@@ -627,7 +645,7 @@ export default function SearchAndUpload(props) {
                   onChange={(event) => setSelectedCategory(event.target.value)}
                 >
                   <option value="">Select a Category</option>
-                  {categories.map((category) => (
+                  {categories.map((category, index) => (
                     <option key={category.value} value={category.value}>
                       {category.title}
                     </option>
@@ -659,33 +677,45 @@ export default function SearchAndUpload(props) {
                   )}
                   <Box paddingTop="50px">
                     <Box
-                      paddingBottom="50px"
+                      paddingBottom="20px"
                       paddingLeft="20px"
                       style={{ color: "black", fontWeight: "bold" }}
                     >
                       <text>File Name</text>
                     </Box>
-                    <Box paddingLeft="20px" >
+                    <Box paddingLeft="20px">
                       <input
                         type="text"
                         value={uploadedFileName}
-                        onChange={(event) => setUploadedFileName(event.target.value)}
+                        onChange={(event) =>
+                          setUploadedFileName(event.target.value)
+                        }
                         placeholder="Enter file name"
-                        style={{ 'border': '1px solid #000', 'padding': '5px', borderRadius: '2px'}}
+                        style={{
+                          border: "1px solid rgba(0,0,0,0.2)",
+                          padding: "5px",
+                          borderRadius: "9px",
+                        }}
                       />
                     </Box>
                     <Box>
-                      <Box paddingLeft="150px" paddingTop="50px" >
-                        <Button onClick={handleUploadClick} backgroundColor={'rgba(255,255,255,0.2)'}>Upload</Button>
+                      <Box paddingLeft="150px" paddingTop="50px">
+                        <Button
+                          onClick={handleUploadClick}
+                          border={"1px solid rgba(0,0,0,0.2)"}
+                          backgroundColor={"rgba(255,255,255,0.2)"}
+                        >
+                          Upload
+                        </Button>
                       </Box>
                     </Box>
                   </Box>
                 </Box>
               )}
             </Box>
-            <Button onClick={closeAddModal} alignSelf="flex-end">
+            {/* <Button onClick={closeAddModal} alignSelf="flex-end">
               Close
-            </Button>
+            </Button> */}
           </ModalBody>
         </ModalContent>
       </Modal>
