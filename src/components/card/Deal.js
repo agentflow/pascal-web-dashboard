@@ -15,10 +15,10 @@ import {
 import Card from "components/card/Card.js";
 // Assets
 import React, { useState } from "react";
-import { IoHeart, IoHeartOutline } from "react-icons/io5";
+// import { IoHeart, IoHeartOutline } from "react-icons/io5";
 
-export default function NFT(props) {
-  const { image, name, author, bidders, download, currentbid } = props;
+export default function Deal(props) {
+  const { image, name, author, type, download, currentbid } = props;
   const [like, setLike] = useState(false);
   const textColor = useColorModeValue("navy.700", "white");
   const textColorBid = useColorModeValue("#54739C", "white");
@@ -32,7 +32,7 @@ export default function NFT(props) {
             h={{ base: "100%", "3xl": "100%" }}
             borderRadius='20px'
           />
-          <Button
+          {/* <Button
             position='absolute'
             bg='white'
             _hover={{ bg: "whiteAlpha.900" }}
@@ -46,15 +46,15 @@ export default function NFT(props) {
             h='36px'
             onClick={() => {
               setLike(!like);
-            }}>
-            <Icon
+            }}> */}
+            {/* <Icon
               transition='0.2s linear'
               w='20px'
               h='20px'
               as={like ? IoHeart : IoHeartOutline}
               color='#54739C'
-            />
-          </Button>
+            /> */}
+          {/* </Button> */}
         </Box>
         <Flex flexDirection='column' justify='space-between' h='100%'>
           <Flex
@@ -84,7 +84,7 @@ export default function NFT(props) {
                 {name}
               </Text>
               <Text
-                color='secondaryGray.600'
+                color='black'
                 fontSize={{
                   base: "sm",
                 }}
@@ -92,8 +92,19 @@ export default function NFT(props) {
                 me='14px'>
                 {author}
               </Text>
+              <Text
+                color='black'
+                fontSize={{
+                  base: "sm",
+                }}
+                fontWeight='400'
+                me='14px'>
+     {type ? `Representing ${type === 'buyer' ? 'Buyer' : 'Seller'}` : ''}
+
+              </Text>
             </Flex>
-            <AvatarGroup
+            
+            {/* <AvatarGroup
               max={3}
               color={textColorBid}
               size='sm'
@@ -108,7 +119,7 @@ export default function NFT(props) {
               {bidders.map((avt, key) => (
                 <Avatar key={key} src={avt} />
               ))}
-            </AvatarGroup>
+            </AvatarGroup> */}
           </Flex>
           <Flex
             align='start'
@@ -122,9 +133,10 @@ export default function NFT(props) {
             }}
             mt='25px'>
             <Text fontWeight='700' fontSize='sm' color={textColorBid}>
-              Current Bid: {currentbid}
+              {currentbid ? "Price: " : ""}
+              {currentbid}
             </Text>
-            <Link
+            {/* <Link
               href={download}
               mt={{
                 base: "0px",
@@ -132,8 +144,8 @@ export default function NFT(props) {
                 lg: "0px",
                 xl: "10px",
                 "2xl": "0px",
-              }}>
-              <Button
+              }}> */}
+              {/* <Button
                 variant='darkBrand'
                 color='white'
                 fontSize='sm'
@@ -142,8 +154,8 @@ export default function NFT(props) {
                 px='24px'
                 py='5px'>
                 Place Bid
-              </Button>
-            </Link>
+              </Button> */}
+            {/* </Link> */}
           </Flex>
         </Flex>
       </Flex>

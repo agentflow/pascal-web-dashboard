@@ -20,7 +20,7 @@
 
 */
 
-import React from "react";
+import React, { useEffect } from "react";
 
 // Chakra imports
 import {
@@ -33,12 +33,14 @@ import {
   useColorModeValue,
   SimpleGrid,
 } from "@chakra-ui/react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { axiosInstance } from "../../../api";
 
 // Custom components
 import Banner from "views/admin/marketplace/components/Banner";
 import TableTopCreators from "views/admin/marketplace/components/TableTopCreators";
 import HistoryItem from "views/admin/marketplace/components/HistoryItem";
-import NFT from "components/card/NFT";
+import Deal from "components/card/Deal";
 import Card from "components/card/Card.js";
 
 // Assets
@@ -56,6 +58,70 @@ import tableDataTopCreators from "views/admin/marketplace/variables/tableDataTop
 import { tableColumnsTopCreators } from "views/admin/marketplace/variables/tableColumnsTopCreators";
 
 export default function Marketplace() {
+  const [openDeals, setOpenDeals] = React.useState([]);
+  const [closedDeals, setClosedDeals] = React.useState([]);
+
+  useEffect (() => {
+    const fetchUserAndDocuments = async () => {
+      try {
+        const userJson = await AsyncStorage.getItem("user");
+
+        if (userJson) {
+          const userObj = JSON.parse(userJson);
+          const userId = userObj.id;
+          const brokerage = userObj.brokerage;
+          if(userObj.isAdmin) {
+            const response = axiosInstance
+            .get('/users/getDealsForBrokerage/getDealsForBrokerage', {
+              params: {
+                userId: userObj.id,
+                brokerageName: userObj.brokerage,
+              },
+            }).then(response => response.data)
+            .then(jsonData => {
+              setOpenDeals(jsonData.dealsOpen);
+              setClosedDeals(jsonData.dealsClosed);
+              return jsonData;
+            })
+            .catch(error => {
+              //window.location.href = "/";
+              console.log(error);
+            });
+          }
+
+          else {
+              const response = axiosInstance
+              .get('/users/getDealsWeb/getDealsWeb', {
+                params: {
+                  userId: userObj.id,
+                },
+              }).then(response => response.data)
+              .then(jsonData => {
+                console.log(jsonData);
+                setOpenDeals(jsonData.dealsOpen);
+                setClosedDeals(jsonData.dealsClosed);  
+                return jsonData;
+              })
+              .catch(error => {
+                //window.location.href = "/";
+                console.log(error);
+              });
+          }
+   
+          
+        } else {
+          window.location.href = "/";
+        }
+      } catch (error) {
+        window.location.href = "/";
+        console.error("Error fetching user or dashboard:", error);
+      }
+    };
+
+    fetchUserAndDocuments();
+  }, []);
+
+
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorBrand = useColorModeValue("#54739C", "white");
@@ -70,8 +136,9 @@ export default function Marketplace() {
         <Flex
           flexDirection='column'
           gridArea={{ xl: "1 / 1 / 2 / 3", "2xl": "1 / 1 / 2 / 2" }}>
-          <Banner />
-          {/* <Flex direction='column'>
+          {/* <Banner />
+          <Banner /> */}
+          <Flex direction='column'>
             <Flex
               mt='45px'
               mb='20px'
@@ -79,9 +146,9 @@ export default function Marketplace() {
               direction={{ base: "column", md: "row" }}
               align={{ base: "start", md: "center" }}>
               <Text color={textColor} fontSize='2xl' ms='24px' fontWeight='700'>
-                Trending NFTs
+                Open Deals
               </Text>
-              <Flex
+              {/* <Flex
                 align='center'
                 me='20px'
                 ms={{ base: "24px", md: "0px" }}
@@ -110,60 +177,38 @@ export default function Marketplace() {
                 <Link color={textColorBrand} fontWeight='500' to='#sports'>
                   Sports
                 </Link>
-              </Flex>
+              </Flex> */}
             </Flex>
             <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
-              <NFT
-                name='Abstract Colors'
-                author='By Esthera Jackson'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft1}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                name='ETH AI Brain'
-                author='By Nick Wilson'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft2}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                name='Mesh Gradients '
-                author='By Will Smith'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft3}
-                currentbid='0.91 ETH'
-                download='#'
-              />
+              {/* {openDeals && openDeals.map((deal) => {
+                return(
+                  <Deal
+                name={deal.address}
+                author={deal.agentOwnerName}
+                image={deal.images[0]}
+                currentbid={deal.price}
+                />
+                )
+              
+              })} */}
+
+            {openDeals && openDeals.length > 0 ? (
+              openDeals.map((deal, index) => (
+
+                <Deal
+                name={deal.address}
+                author={deal.agentOwnerName}
+                image={deal.images && deal.images[0]}
+                type={deal.type}
+                currentbid={deal.price && deal.price}
+                />
+              ))
+            ) : (
+              <Deal
+                name={"No Deals Open"}
+                />
+            )}
+              
             </SimpleGrid>
             <Text
               mt='45px'
@@ -172,65 +217,31 @@ export default function Marketplace() {
               fontSize='2xl'
               ms='24px'
               fontWeight='700'>
-              Recently Added
+              Closed Deals
             </Text>
             <SimpleGrid
               columns={{ base: 1, md: 3 }}
               gap='20px'
               mb={{ base: "20px", xl: "0px" }}>
-              <NFT
-                name='Swipe Circles'
-                author='By Peter Will'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft4}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                name='Colorful Heaven'
-                author='By Mark Benjamin'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft5}
-                currentbid='0.91 ETH'
-                download='#'
-              />
-              <NFT
-                name='3D Cubes Art'
-                author='By Manny Gates'
-                bidders={[
-                  Avatar1,
-                  Avatar2,
-                  Avatar3,
-                  Avatar4,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                  Avatar1,
-                ]}
-                image={Nft6}
-                currentbid='0.91 ETH'
-                download='#'
-              />
+             
+            {closedDeals && closedDeals.length > 0 ? (
+              closedDeals.map((deal, index) => (
+
+                <Deal
+                name={deal.address}
+                author={deal.agentOwnerName}
+                image={deal.images && deal.images[0]}
+                type={deal.type}
+                currentbid={deal.price && deal.price}
+                />
+              ))
+            ) : (
+              <Deal
+                name={"No Closed Deals"}
+                />
+            )}
             </SimpleGrid>
-          </Flex> */}
+          </Flex>
         </Flex>
         {/* <Flex
           flexDirection='column'

@@ -21,7 +21,7 @@ import {
   useTable,
 } from "react-table";
 
-function TopCreatorTable(props) {
+function TopCreatorTable(props) { 
   const { columnsData, tableData } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);

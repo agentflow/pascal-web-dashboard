@@ -36,7 +36,7 @@ const routes = [
     component: DataTables,
   },
   {
-    name: "My Deals ",
+    name: "Deals ",
     layout: "/admin",
     icon: <Icon as={BsHouseDoorFill} width='20px' height='20px' color='inherit' />,
     path: "/deals",
