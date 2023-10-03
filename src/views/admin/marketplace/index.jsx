@@ -179,37 +179,22 @@ export default function Marketplace() {
                 </Link>
               </Flex> */}
             </Flex>
-            <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
-              {/* {openDeals && openDeals.map((deal) => {
-                return(
-                  <Deal
-                name={deal.address}
-                author={deal.agentOwnerName}
-                image={deal.images[0]}
-                currentbid={deal.price}
-                />
-                )
-              
-              })} */}
+  <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px' style={{ width: '70vw' }}>
 
-            {openDeals && openDeals.length > 0 ? (
-              openDeals.map((deal, index) => (
-
-                <Deal
-                name={deal.address}
-                author={deal.agentOwnerName}
-                image={deal.images && deal.images[0]}
-                type={deal.type}
-                currentbid={deal.price && deal.price}
-                />
-              ))
-            ) : (
-              <Deal
-                name={"No Deals Open"}
-                />
-            )}
-              
-            </SimpleGrid>
+    {openDeals && openDeals.length > 0 ? (
+      openDeals.map((deal, index) => (
+        <Deal
+          name={deal.address}
+          author={deal.agentOwnerName}
+          image={deal.images && deal.images[0]}
+          type={deal.type}
+          currentbid={deal.price && deal.price}
+        />
+      ))
+    ) : (
+      <Deal name={"No Deals Open"} />
+    )}
+  </SimpleGrid>
             <Text
               mt='45px'
               mb='36px'
@@ -219,10 +204,8 @@ export default function Marketplace() {
               fontWeight='700'>
               Closed Deals
             </Text>
-            <SimpleGrid
-              columns={{ base: 1, md: 3 }}
-              gap='20px'
-              mb={{ base: "20px", xl: "0px" }}>
+            <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px' style={{ width: '70vw' }}>
+
              
             {closedDeals && closedDeals.length > 0 ? (
               closedDeals.map((deal, index) => (
