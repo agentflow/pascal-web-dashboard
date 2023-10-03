@@ -422,104 +422,80 @@ export default function SearchAndUpload(props) {
             <AiOutlineSearch size="20px" />
           </InputRightElement>
         </InputGroup>
-        <Box mt="30px" />
-        <Flex alignItems="stretch">
-          <Box p="10px" flex="1" width="50%">
+        <Box mt="30px"/>
+
+        <Flex width={'50vw'}>
+          <Flex alignItems="stretch">
+          <Box p="10px"   >
             {filteredData ? (
               filteredData.map((deal, index) => (
-                <Flex
+                <Box
                   key={deal.id}
-                  align="center"
-                  justify="space-between"
-                  alignContent={"center"}
+                  backgroundColor="white"
+                  borderRadius="8px"
+                  padding="10px"
                   mb="20px"
-                  w={"100%"}
-                  // backgroundColor="white"
                   onClick={() =>
                     handleButtonClick(deal.dealId, deal.address, deal.type)
                   }
                   style={{
                     cursor: "pointer",
-                    borderRadius: "8px",
-                    padding: "10px",
                   }}
                 >
                   <Flex
                     key={deal.id}
                     align="center"
                     justify="space-between"
-                    alignContent={"center"}
-                    mb="20px"
-                    w={"75%"}
-                    // backgroundColor="white"
-
-                    onClick={() =>
-                      handleButtonClick(deal.dealId, deal.address, deal.type)
-                    }
-                    style={{
-                      cursor: "pointer",
-                      borderRadius: "8px",
-                      padding: "10px",
-                    }}
+                    alignContent="center"
                   >
-                    <Box flex="1">
-                      <Text
-                        fontSize="lg"
-                        fontWeight={
-                          selectedDealAddress === deal.address
-                            ? "bold"
-                            : "normal"
-                        }
-                        whiteSpace="nowrap"
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                      >
-                        {deal.address.split(",")[0] +
-                          ", " +
-                          deal.address.split(",")[1]}
-                      </Text>
-                      <Text style={{ textTransform: "capitalize" }}>
-                        {deal.type} deal
-                      </Text>
-                      <Text>Client Name: {deal.clientName}</Text>
-                    </Box>
-                  </Flex>
-                  <Flex
-                    key={deal.id}
-                    align="center"
-                    justify="space-between"
-                    alignContent={"center"}
-                    mb="20px"
-                    h={"100%"}
-                    // backgroundColor="white"
-
-                    onClick={() =>
-                      handleButtonClick(deal.dealId, deal.address, deal.type)
-                    }
-                    style={{
-                      cursor: "pointer",
-                      borderRadius: "8px",
-                      padding: "10px",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        flex: "none",
-                        width: "200px",
-                        textAlign: "right",
-                      }}
+                    <Flex
+                      key={deal.id}
+                      align="center"
+                      justify="space-between"
+                      alignContent="center"
+                      w="75%"
                     >
-                      {loading ? "Loading..." : `${deal.length} Files`}
-                    </Text>
+                      <Box flex="1">
+                        <Text
+                          fontSize="lg"
+                          fontWeight={
+                            selectedDealAddress === deal.address
+                              ? "bold"
+                              : "normal"
+                          }
+                          whiteSpace="nowrap"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          maxWidth="90%"
+                        >
+                          {deal.address.split(",")[0] +
+                            ", " +
+                            deal.address.split(",")[1]}
+                        </Text>
+                        <Text style={{ textTransform: "capitalize" }}>
+                          {deal.type} deal
+                        </Text>
+                        <Text>Client Name: {deal.clientName}</Text>
+                        <Text
+                          style={{
+                            flex: "none",
+                            width: "200px",
+                            textAlign: "right",
+                          }}
+                        >
+                          {loading ? "Loading..." : `${deal.length} Files`}
+                        </Text>
+                      </Box>
+                    </Flex>
                   </Flex>
-                </Flex>
+                </Box>
               ))
             ) : (
               <p>Loading data...</p>
             )}
           </Box>
-
-          <Divider orientation="vertical" mx="150px" borderColor="black" />
+          </Flex>
+          <Flex width={'50vw'} ml={'20px'}>
           <Box p="10px" flex="1">
             {/* Display selected address */}
             {selectedAddress && (
@@ -606,6 +582,7 @@ export default function SearchAndUpload(props) {
               </Box>
             ))}
           </Box>
+          </Flex>
           {showPDF && (
             // <iframe src={filePDF}/>
             <iframe src={filePDF} frameborder="0" target="_blank"></iframe>
