@@ -21,7 +21,7 @@ import {
   useTable,
 } from "react-table";
 
-function TopCreatorTable(props) { 
+function TopCreatorTable(props) {
   const { columnsData, tableData } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
@@ -48,10 +48,10 @@ function TopCreatorTable(props) {
       <Flex
         direction='column'
         w='100%'
-        mt={'20px'}
-        overflowX={{ sm: "scroll", lg: "hidden" }}
-        style={{ position: 'relative' }} // Ensure the overlay covers this component
-        >
+        borderRadius='20px'
+        pt={{ sm: "10px", lg: "20px" }}
+        backgroundColor={useColorModeValue("white", "secondaryGray.700")}
+        overflowX={{ sm: "scroll", lg: "hidden" }}>
         <Flex
           align={{ sm: "flex-start", lg: "center" }}
           justify='space-between'
@@ -61,13 +61,12 @@ function TopCreatorTable(props) {
           mb='10px'
           boxShadow='0px 40px 58px -20px rgba(112, 144, 176, 0.26)'>
           <Text color={textColor} fontSize='xl' fontWeight='600'>
-            Top Agents on Pascal
+            Live Feed
           </Text>
-          <Text>Coming Soon</Text>
-          {/* <Button variant='action'>Coming Soon</Button> */}
+          {/* <Button variant='action'>See all</Button> */}
         </Flex>
         <Table {...getTableProps()} variant='simple' color='gray.500'>
-          <Thead>
+          {/* <Thead>
             {headerGroups.map((headerGroup, index) => (
               <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
                 {headerGroup.headers.map((column, index) => (
@@ -87,7 +86,7 @@ function TopCreatorTable(props) {
                 ))}
               </Tr>
             ))}
-          </Thead>
+          </Thead> */}
 
           <Tbody {...getTableBodyProps()}>
             {page.map((row, index) => {
@@ -96,7 +95,7 @@ function TopCreatorTable(props) {
                 <Tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     let data = "";
-                    if (cell.column.Header === "Agent") {
+                    if (cell.column.Header === "Name") {
                       data = (
                         <Flex align='center'>
                           <Avatar
@@ -113,7 +112,7 @@ function TopCreatorTable(props) {
                           </Text>
                         </Flex>
                       );
-                    } else if (cell.column.Header === "Deals1") {
+                    } else if (cell.column.Header === "Address") {
                       data = (
                         <Text
                           color={textColorSecondary}
@@ -122,7 +121,7 @@ function TopCreatorTable(props) {
                           {cell.value}
                         </Text>
                       );
-                    } else if (cell.column.Header === "Rating1") {
+                    } else if (cell.column.Header === "Rating") {
                       data = (
                         <Box>
                           <Progress

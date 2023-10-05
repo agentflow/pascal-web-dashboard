@@ -71,7 +71,7 @@ export default function WeeklyRevenue(props) {
           width: '100%',
           borderRadius: '20px',
           height: '100%',
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          backgroundColor: 'rgba(0, 0, 0, 0.4)',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',

@@ -48,7 +48,6 @@ function SignIn() {
         }
       )
 
-      console.log(response.data);
 
 
       setAuthTokens({

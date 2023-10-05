@@ -52,7 +52,7 @@ const routes = [
   },*/}
   ,
   {
-    name: "Sign In",
+    name: "Sign Out",
     layout: "/auth",
     path: "/sign-in",
     icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,

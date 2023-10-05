@@ -100,7 +100,6 @@ export default function SearchAndUpload(props) {
       const fileKey = document.file;
 
       if (fileKey) {
-        console.log("File key:", fileKey);
 
         const response = await axiosInstance.get(
           "/deals/getDealFile/getDealFile",
@@ -111,9 +110,7 @@ export default function SearchAndUpload(props) {
           }
         );
 
-        console.log("File fetched successfully:", response.data);
         setShowPDF(true);
-        console.log("showPDF", showPDF);
         // let buildFileName =
         //   "https://docs.google.com/gview?url=" +
         //   response.data +
@@ -132,11 +129,11 @@ export default function SearchAndUpload(props) {
   };
 
   const handleDownloadClick = (document) => {
-    console.log("Download clicked for:", document.name);
+    // console.log("Download clicked for:", document.name);
   };
 
   const handleAnotherButtonClick = (document) => {
-    console.log("Another button clicked for:", document.name);
+    // console.log("Another button clicked for:", document.name);
   };
 
   const openAddModal = () => {
@@ -219,7 +216,6 @@ export default function SearchAndUpload(props) {
           }
         );
 
-        console.log("File uploaded successfully:", response.data);
 
         const updatedFetchedDocuments = fetchedDocuments.map((step) => {
           if (step.title === selectedCategory) {
@@ -378,7 +374,6 @@ export default function SearchAndUpload(props) {
       });
 
       if (response.data) {
-        console.log("File Deleted Successfully");
         const updatedFetchedDocuments = fetchedDocuments.map((step) => {
           if (step.title === selectedCategory) {
             return {
@@ -388,7 +383,6 @@ export default function SearchAndUpload(props) {
           }
           return step;
         });
-        console.log("updatedFetchedDocuments", updatedFetchedDocuments);
 
         // Update the fetchedDocuments state with the updated array
         setFetchedDocuments(updatedFetchedDocuments);

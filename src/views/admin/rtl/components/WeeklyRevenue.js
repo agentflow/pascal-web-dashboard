@@ -33,7 +33,7 @@ export default function WeeklyRevenue(props) {
     { bg: "whiteAlpha.100" }
   );
   return (
-    <Overlay>
+    <Overlay style={{ opacity: 0.6 }}>
     <Card align='center' direction='column' w='100%' {...rest}>
       <Flex align='center' w='100%' px='15px' py='10px'>
         <Text

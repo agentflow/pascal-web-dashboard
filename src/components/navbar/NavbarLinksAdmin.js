@@ -52,7 +52,6 @@ export default function HeaderLinks(props) {
         const userId = userObj.id;
         setUserName(userObj.name);
         const refreshToken = getRefreshToken();
-        console.log('REfresh', refreshToken);
 
         // const refreshToken = getRefreshToken();
 

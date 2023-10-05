@@ -5,11 +5,13 @@ import Card from "components/card/Card.js";
 import PieChart from "components/charts/PieChart";
 import { pieChartData, pieChartOptions } from "variables/charts";
 import { VSeparator } from "components/separator/Separator";
-import React from "react";
+import React, { useEffect } from "react";
+import ReactApexChart from "react-apexcharts";
 
 export default function Conversion(props) {
   const { ...rest } = props;
-
+  const [dataToPass, setDataToPass] = React.useState(props.data);
+  // const [pieChartData, setPieChartData] = React.useState([]);
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const cardColor = useColorModeValue("white", "navy.700");
@@ -26,9 +28,9 @@ export default function Conversion(props) {
         w='100%'
         mb='8px'>
         <Text color={textColor} fontSize='md' fontWeight='600' mt='4px'>
-          Your Pie Chart
+          Deal Breakdown
         </Text>
-        <Select
+        {/* <Select
           fontSize='sm'
           variant='subtle'
           defaultValue='monthly'
@@ -37,15 +39,16 @@ export default function Conversion(props) {
           <option value='daily'>Daily</option>
           <option value='monthly'>Monthly</option>
           <option value='yearly'>Yearly</option>
-        </Select>
+        </Select> */}
       </Flex>
-
-      <PieChart
-        h='100%'
-        w='100%'
-        chartData={pieChartData}
-        chartOptions={pieChartOptions}
+      <ReactApexChart
+        options={pieChartOptions}
+        series={props.data}
+        type='pie'
+        width='100%'
+        height='55%'
       />
+
       <Card
         bg={cardColor}
         flexDirection='row'
@@ -63,11 +66,11 @@ export default function Conversion(props) {
               color='secondaryGray.600'
               fontWeight='700'
               mb='5px'>
-              Your files
+              In Escrow
             </Text>
           </Flex>
           <Text fontSize='lg' color={textColor} fontWeight='700'>
-            63%
+           { pieChartData[0]}
           </Text>
         </Flex>
         <VSeparator mx={{ base: "60px", xl: "60px", "2xl": "60px" }} />
@@ -79,11 +82,27 @@ export default function Conversion(props) {
               color='secondaryGray.600'
               fontWeight='700'
               mb='5px'>
-              System
+              Closed
             </Text>
           </Flex>
           <Text fontSize='lg' color={textColor} fontWeight='700'>
-            25%
+          { pieChartData[1]}
+          </Text>
+        </Flex>
+        <VSeparator mx={{ base: "60px", xl: "60px", "2xl": "60px" }} />
+        <Flex direction='column' py='5px' me='10px'>
+          <Flex align='center'>
+            <Box h='8px' w='8px' bg='#6AD2FF' borderRadius='50%' me='4px' />
+            <Text
+              fontSize='xs'
+              color='secondaryGray.600'
+              fontWeight='700'
+              mb='5px'>
+              Open
+            </Text>
+          </Flex>
+          <Text fontSize='lg' color={textColor} fontWeight='700'>
+          { pieChartData[2]}
           </Text>
         </Flex>
       </Card>

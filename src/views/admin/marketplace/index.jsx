@@ -97,7 +97,6 @@ export default function Marketplace() {
                 },
               }).then(response => response.data)
               .then(jsonData => {
-                console.log(jsonData);
                 setOpenDeals(jsonData.dealsOpen);
                 setClosedDeals(jsonData.dealsClosed);  
                 return jsonData;
