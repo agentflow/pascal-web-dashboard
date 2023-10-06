@@ -309,16 +309,15 @@ export default function UserReports() {
                     <Icon
                       w="32px"
                       h="32px"
-                      as={MdBarChart}
-                      color={brandColor}
+                      as={MdAttachMoney}
+                      color={'#01B574'}
                     />
                   }
                 />
               }
-              name="Deals"
-              value={deals}
+              name="Commissions in the Pipeline"
+              value={grossCommissions}
             />
-
             <MiniStatistics
               startContent={
                 <IconBox
@@ -329,26 +328,38 @@ export default function UserReports() {
                     <Icon
                       w="32px"
                       h="32px"
-                      as={MdAttachMoney}
+                      as={MdBarChart}
                       color={brandColor}
                     />
                   }
                 />
               }
-              name="Commissions in the Pipeline"
-              value={grossCommissions}
+              name="Deals"
+              value={deals}
             />
+
+            
             <MiniStatistics
               growth={dealsThisMonthPercentage}
+              startContent={
+                <IconBox
+                  w="56px"
+                  h="56px"
+                  bg={boxBg}
+                  icon={
+                    <Icon
+                      w="32px"
+                      h="32px"
+                      as={MdBarChart}
+                      color={brandColor}
+                    />
+                  }
+                />
+              }
               name="Deals this Month"
               value={dealsThisMonth}
             />
-            <MiniStatistics
-              endContent={<Flex me="-16px" mt="10px"></Flex>}
-              name="Listings"
-              value={listings}
-            />
-            <MiniStatistics
+                      <MiniStatistics
               startContent={
                 <IconBox
                   w="56px"
@@ -361,6 +372,22 @@ export default function UserReports() {
               value={grossTotal}
             />
             <MiniStatistics
+              endContent={<Flex me="-16px" mt="10px"></Flex>}
+              startContent={
+                <IconBox
+                  w="56px"
+                  h="56px"
+                  bg={boxBg}
+                  icon={
+                    <Icon w="32px" h="32px" as={MdHouse} color={brandColor} />
+                  }
+                />
+              }
+              name="Listings"
+              value={listings}
+            />
+  
+            <MiniStatistics
               startContent={
                 <IconBox
                   w="56px"
@@ -370,7 +397,7 @@ export default function UserReports() {
                     <Icon
                       w="32px"
                       h="32px"
-                      as={MdFileCopy}
+                      as={MdOutlinePersonSearch}
                       color={brandColor}
                     />
                   }
@@ -408,7 +435,7 @@ export default function UserReports() {
                       w="32px"
                       h="32px"
                       as={MdAttachMoney}
-                      color={brandColor}
+                      color={'#01B574'}
                     />
                   }
                 />
@@ -458,21 +485,14 @@ export default function UserReports() {
               value={numEscrowsBrokerage}
             />
             <MiniStatistics
-              startContent={
-                <IconBox
-                  w="56px"
-                  h="56px"
-                  bg={boxBg}
-                  icon={
-                    <Icon
-                      w="32px"
-                      h="32px"
-                      as={MdAttachMoney}
-                      color={brandColor}
-                    />
-                  }
-                />
-              }
+                        startContent={
+                          <IconBox
+                            w="56px"
+                            h="56px"
+                            bg="linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)"
+                            icon={<Icon w="28px" h="28px" as={MdAddTask} color="white" />}
+                          />
+                        }
               name="Closed Commissions"
               value={grossCommissionsBroker}
             />
