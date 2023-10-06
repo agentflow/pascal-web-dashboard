@@ -22,7 +22,7 @@ export default function Conversion(props) {
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const boxBg = useColorModeValue("secondaryGray.300", "navy.700");
-  const brandColor = useColorModeValue("#54739C", "brand.400");
+  const brandColor = useColorModeValue("#274C77", "brand.400");
   return (
     <Card p='20px' align='center' direction='column' w='100%' {...rest}>
       <Flex alignItems='center' w='100%' mb='30px'>

@@ -21,7 +21,7 @@ export default function Deal(props) {
   const { image, name, author, type, download, currentbid } = props;
   const [like, setLike] = useState(false);
   const textColor = useColorModeValue("navy.700", "white");
-  const textColorBid = useColorModeValue("#54739C", "white");
+  const textColorBid = useColorModeValue("#274C77", "white");
   return (
     <Card p='20px'>
       <Flex direction={{ base: "column" }} justify='center'>
@@ -52,7 +52,7 @@ export default function Deal(props) {
               w='20px'
               h='20px'
               as={like ? IoHeart : IoHeartOutline}
-              color='#54739C'
+              color='#274C77'
             /> */}
           {/* </Button> */}
         </Box>

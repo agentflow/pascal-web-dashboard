@@ -22,7 +22,6 @@ import {
 
 export default function TotalSpent(props) {
   const { ...rest } = props;
-  console.log(props.mainCommmission);
 
   // Chakra Color Mode
 
@@ -34,7 +33,7 @@ export default function TotalSpent(props) {
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = useColorModeValue("secondaryGray.600", "white");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
-  const iconColor = useColorModeValue("#54739C", "white");
+  const iconColor = useColorModeValue("#274C77", "white");
   const bgButton = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   const bgHover = useColorModeValue(
     { bg: "secondaryGray.400" },

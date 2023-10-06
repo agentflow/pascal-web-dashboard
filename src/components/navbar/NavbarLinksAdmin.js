@@ -181,7 +181,7 @@ export default function HeaderLinks(props) {
             _hover={{ cursor: "pointer" }}
             color="white"
             name={userName}
-            bg="#54739C"
+            bg="#274C77"
             size="sm"
             w="40px"
             h="40px"

@@ -4,7 +4,6 @@
 ██████  ███████ ███████ ██      ███████ ██      
 ██      ██   ██      ██ ██      ██   ██ ██      
 ██      ██   ██ ███████  ██████ ██   ██ ███████                                                                                                                                                                                                                                                                                                                                    
-
 */
 
 // Chakra imports
@@ -35,6 +34,9 @@ import {
   MdAttachMoney,
   MdBarChart,
   MdFileCopy,
+  MdHouse,
+  MdFactCheck,
+  MdOutlinePersonSearch,
 } from "react-icons/md";
 import { AiFillFolderOpen } from "react-icons/ai";
 import TableTopCreators from "views/admin/marketplace/components/TableTopCreators";
@@ -76,15 +78,15 @@ export default function UserReports() {
   const [numEscrowsBrokerage, setNumEscrowsBrokerage] = React.useState(0);
   const [numListingsBrokerage, setNumListingsBrokerage] = React.useState(0);
   const [numBuyerBrokerage, setNumBuyerBrokerage] = React.useState(0);
-  const [escrowPercentBrokerage, setEscrowPercentBrokerage] = React.useState(
-    0
-  );
+  const [escrowPercentBrokerage, setEscrowPercentBrokerage] = React.useState(0);
   const [dealsOpenBrokerLength, setDealsOpenBrokerLength] = React.useState(0);
   const [commissionsInPipeline, setCommissionsInPipeline] = React.useState(0);
   const [grossCommissionsBroker, setGrossCommissionsBroker] = React.useState(0);
   const [inEscrowPie, setInEscrowPie] = React.useState(0);
   const [closedPie, setClosedPie] = React.useState(0);
   const [preescrowPie, setPreescrowPie] = React.useState(0);
+  const textColor = useColorModeValue("navy.700", "white");
+
   async function processDeals(deals) {
     let buildColumns = [];
     let sellerTotalSteps = 15;
@@ -92,10 +94,14 @@ export default function UserReports() {
     // Define a function that processes each item asynchronously
     async function processItem(i) {
       let item = {};
-      if(item.type == 'seller'){
-        item.progress = Math.floor((deals[i].statusSteps / sellerTotalSteps) * 100);
+      if (item.type == "seller") {
+        item.progress = Math.floor(
+          (deals[i].statusSteps / sellerTotalSteps) * 100
+        );
       } else {
-        item.progress = Math.floor((deals[i].statusSteps / buyerTotalSteps) * 100);
+        item.progress = Math.floor(
+          (deals[i].statusSteps / buyerTotalSteps) * 100
+        );
       }
       item.address = deals[i].address;
       item.status = deals[i].journeyCategory;
@@ -125,7 +131,7 @@ export default function UserReports() {
       item.address = notifications[i].address;
       buildColumns.push(item);
     }
-    if(notifications){
+    if (notifications) {
       for (let i = 0; i < notifications.length; i++) {
         await processItem(i);
       }
@@ -175,35 +181,40 @@ export default function UserReports() {
                 jsonData.dealStats.escrowPercentage + "%"
               );
               if (userObj.isAdmin) {
-
-              processDeals(jsonData.adminView.dealsOpenBrokerage);
-              processLiveFeed(jsonData.adminView.brokerNotify);
-              setDealsOpenBrokerLength(jsonData.adminView.dealsOpenBrokerage.length)
-              setDealsClosedBrokerage(jsonData.adminView.dealsClosedBrokerage);
-              setBrokerageListings(jsonData.adminView.numListings.length);
-              setNumBuyerBrokerage(jsonData.adminView.numBuyDeals.length);
-              setNumEscrowsBrokerage(jsonData.adminView.numEscrowsOpen.length);
-              setEscrowPercentBrokerage(
-                jsonData.adminView.escrowPercentage + "%"
-              );
-              setCommissionsInPipeline(
-                "$" + jsonData.adminView.commissionsInPipeline.toLocaleString()
-              );
-              setInEscrowPie(jsonData.adminView.inEscrowPie);
-              setClosedPie(jsonData.adminView.closedPie);
-              setPreescrowPie(jsonData.adminView.preEscrowPie);
-              
+                processDeals(jsonData.adminView.dealsOpenBrokerage);
+                processLiveFeed(jsonData.adminView.brokerNotify);
+                setDealsOpenBrokerLength(
+                  jsonData.adminView.dealsOpenBrokerage.length
+                );
+                setDealsClosedBrokerage(
+                  jsonData.adminView.dealsClosedBrokerage
+                );
+                setBrokerageListings(jsonData.adminView.numListings.length);
+                setNumBuyerBrokerage(jsonData.adminView.numBuyDeals.length);
+                setNumEscrowsBrokerage(
+                  jsonData.adminView.numEscrowsOpen.length
+                );
+                setEscrowPercentBrokerage(
+                  jsonData.adminView.escrowPercentage + "%"
+                );
+                setCommissionsInPipeline(
+                  "$" +
+                    jsonData.adminView.commissionsInPipeline.toLocaleString()
+                );
+                setInEscrowPie(jsonData.adminView.inEscrowPie);
+                setClosedPie(jsonData.adminView.closedPie);
+                setPreescrowPie(jsonData.adminView.preEscrowPie);
+                setGrossCommissionsBroker(
+                  "$" + jsonData.adminView.grossCommissions.toLocaleString()
+                );
               }
-              // setGrossCommissionsBroker(
-              //   "$" + jsonData.adminView.grossCommissions.toLocaleString()
-              // );
+
               return jsonData;
             })
             .catch((error) => {
               window.location.href = "/";
               console.log(error);
             });
-
         } else {
           window.location.href = "/";
         }
@@ -218,7 +229,7 @@ export default function UserReports() {
 
   const textColorSecondary = useColorModeValue("secondaryGray.600", "white");
 
-  const brandColor = useColorModeValue("#54739C", "white");
+  const brandColor = useColorModeValue("#274C77", "white");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
@@ -241,7 +252,7 @@ export default function UserReports() {
               style={{
                 fontSize: "24px",
                 fontWeight: "bold",
-                color: "#54739C",
+                color: "#274C77",
                 marginTop: "10px",
               }}
             >
@@ -254,7 +265,7 @@ export default function UserReports() {
               bg={boxBg}
               fontSize="sm"
               fontWeight="500"
-              color={textColorSecondary}
+              color={textColor}
               borderRadius="7px"
               onClick={() => {
                 setAgentView(false);
@@ -268,7 +279,7 @@ export default function UserReports() {
               ml="10px" // Add some margin to separate the buttons
               fontSize="sm"
               fontWeight="500"
-              color={textColorSecondary}
+              color={textColor}
               borderRadius="7px"
               onClick={() => {
                 setAgentView(true);
@@ -381,21 +392,31 @@ export default function UserReports() {
         </div>
       ) : (
         <div>
-          <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap="20px" mb="20px">
-            <ComplexTable
-              columnsData={columnsDataComplex}
-              tableData={dealsOpenBrokerage}
-            />
-            <TableTopCreators
-              tableData={liveFeed}
-              columnsData={tableColumnsTopCreators}
-            />
-          </SimpleGrid>
           <SimpleGrid
             columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
             gap="20px"
             mb="20px"
           >
+            <MiniStatistics
+              startContent={
+                <IconBox
+                  w="56px"
+                  h="56px"
+                  bg={boxBg}
+                  icon={
+                    <Icon
+                      w="32px"
+                      h="32px"
+                      as={MdAttachMoney}
+                      color={brandColor}
+                    />
+                  }
+                />
+              }
+              name="Commissions in the Pipeline"
+              value={commissionsInPipeline}
+            />
+
             <MiniStatistics
               startContent={
                 <IconBox
@@ -426,16 +447,17 @@ export default function UserReports() {
                     <Icon
                       w="32px"
                       h="32px"
-                      as={MdAttachMoney}
+                      as={MdFactCheck}
                       color={brandColor}
                     />
                   }
                 />
               }
-              name="Commissions in the Pipeline"
-              value={commissionsInPipeline}
+              growth={escrowPercentBrokerage}
+              name="Open Escrows"
+              value={numEscrowsBrokerage}
             />
-                  <MiniStatistics
+            <MiniStatistics
               startContent={
                 <IconBox
                   w="56px"
@@ -455,17 +477,36 @@ export default function UserReports() {
               value={grossCommissionsBroker}
             />
             <MiniStatistics
-              growth={escrowPercentBrokerage}
-              name="Open Escrows"
-              value={numEscrowsBrokerage}
-            />
-            <MiniStatistics
-              endContent={<Flex me="-16px" mt="10px"></Flex>}
+              startContent={
+                <IconBox
+                  w="56px"
+                  h="56px"
+                  bg={boxBg}
+                  icon={
+                    <Icon w="32px" h="32px" as={MdHouse} color={brandColor} />
+                  }
+                />
+              }
+              // endContent={<Flex me="-16px" mt="10px"></Flex>}
               name="Active Listings"
               value={brokerageListings}
             />
-              <MiniStatistics
-              endContent={<Flex me="-16px" mt="10px"></Flex>}
+            <MiniStatistics
+              startContent={
+                <IconBox
+                  w="56px"
+                  h="56px"
+                  bg={boxBg}
+                  icon={
+                    <Icon
+                      w="32px"
+                      h="32px"
+                      as={MdOutlinePersonSearch}
+                      color={brandColor}
+                    />
+                  }
+                />
+              }
               name="Buyer Deals"
               value={numBuyerBrokerage}
             />
@@ -501,7 +542,16 @@ export default function UserReports() {
               value={clients}
             /> */}
           </SimpleGrid>
-
+          <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap="20px" mb="20px">
+            <ComplexTable
+              columnsData={columnsDataComplex}
+              tableData={dealsOpenBrokerage}
+            />
+            <TableTopCreators
+              tableData={liveFeed}
+              columnsData={tableColumnsTopCreators}
+            />
+          </SimpleGrid>
           {/* <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px" mb="20px">
             <TotalSpent mainCommission={123} /> 
             <WeeklyRevenue name={"Client Growth"} />
@@ -513,11 +563,11 @@ export default function UserReports() {
               tableData={tableDataCheck}
             />
             <SimpleGrid columns={{ base: 1, md: 1, xl: 1 }} gap="20px"> */}
-               {/* <DailyTraffic /> */}
-              <PieCard data={[inEscrowPie, closedPie, preescrowPie]} />
+            {/* <DailyTraffic /> */}
+            <PieCard data={[inEscrowPie, closedPie, preescrowPie]} />
             {/* </SimpleGrid> */}
           </SimpleGrid>
-         {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap="20px" mb="20px">
+          {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap="20px" mb="20px">
             <ComplexTable
               columnsData={columnsDataComplex}
               tableData={tableDataComplex}

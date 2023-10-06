@@ -115,7 +115,7 @@ function SignIn() {
               fontWeight="500"
               mb="8px"
             >
-              Email<Text color="#54739C">*</Text>
+              Email<Text color="#274C77">*</Text>
             </FormLabel>
             <Input
               isRequired={true}
@@ -136,7 +136,7 @@ function SignIn() {
               fontWeight="500"
               display="flex"
             >
-              Password<Text color="#54739C">*</Text>
+              Password<Text color="#274C77">*</Text>
             </FormLabel>
             <InputGroup size="md">
               <Input
@@ -176,7 +176,7 @@ function SignIn() {
                 </FormLabel>
               </FormControl>
               {/* <NavLink to="/auth/forgot-password">
-                <Text color="#54739C" fontSize="sm" w="124px" fontWeight="500">
+                <Text color="#274C77" fontSize="sm" w="124px" fontWeight="500">
                   Forgot password?
                 </Text>
               </NavLink> */}
@@ -187,7 +187,7 @@ function SignIn() {
               variant="brand"
               fontWeight="500"
               color={"white"}
-              backgroundColor={"#54739C"}
+              backgroundColor={"#274C77"}
               w="100%"
               h="50"
               mb="24px"

@@ -13,7 +13,7 @@ import { BsHouseDoorFill } from "react-icons/bs";
 
 // Admin Imports
 import MainDashboard from "views/admin/default";
-import NFTMarketplace from "views/admin/marketplace";
+import Deals from "views/admin/marketplace";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/dataTables";
 
@@ -40,7 +40,7 @@ const routes = [
     layout: "/admin",
     icon: <Icon as={BsHouseDoorFill} width='20px' height='20px' color='inherit' />,
     path: "/deals",
-    component: NFTMarketplace,
+    component: Deals,
   },
   {/*
   {

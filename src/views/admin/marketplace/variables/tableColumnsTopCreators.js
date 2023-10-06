@@ -7,4 +7,5 @@ export const tableColumnsTopCreators = [
     Header: "Address" ,
     accessor: "address",
   }
+
 ];

@@ -12,9 +12,9 @@ export function SidebarLinks(props) {
     "secondaryGray.600",
     "secondaryGray.600"
   );
-  let activeIcon = useColorModeValue("#54739C", "white");
+  let activeIcon = useColorModeValue("#274C77", "white");
   let textColor = useColorModeValue("secondaryGray.500", "white");
-  let brandColor = useColorModeValue("#54739C", "brand.400");
+  let brandColor = useColorModeValue("#274C77", "brand.400");
 
   const { routes } = props;
 

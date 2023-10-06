@@ -58,7 +58,8 @@ export default function ColumnsTable(props) {
       direction='column'
       w='100%'
       px='0px'
-      overflowX={{ sm: "scroll", lg: "hidden" }}>
+      overflowX={{ sm: "scroll", lg: "scroll" }}
+      overflowY={{ sm: "scroll", lg: "scroll" }}>
       <Flex px='25px' justify='space-between' mb='10px' align='center'>
         <Text
           color={textColor}
@@ -69,6 +70,8 @@ export default function ColumnsTable(props) {
         </Text>
         {/* <Menu /> */}
       </Flex>
+      <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
           {headerGroups.map((headerGroup, index) => (
@@ -180,6 +183,7 @@ export default function ColumnsTable(props) {
           })}
         </Tbody>
       </Table>
+      </div>
     </Card>
   );
 }

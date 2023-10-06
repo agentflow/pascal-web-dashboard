@@ -46,7 +46,7 @@ export default function Conversion(props) {
         series={props.data}
         type='pie'
         width='100%'
-        height='55%'
+        height='70%'
       />
 
       <Card
@@ -58,9 +58,27 @@ export default function Conversion(props) {
         px='20px'
         mt='15px'
         mx='auto'>
+        
+        <Flex direction='column' py='5px' me='10px'>
+          <Flex align='center'>
+            <Box h='8px' w='8px' bg='#274C77' borderRadius='50%' me='4px' />
+            <Text
+              fontSize='xs'
+              color='secondaryGray.600'
+              fontWeight='700'
+              mb='5px'>
+              Pre-Escrow
+            </Text>
+          </Flex>
+          <Text fontSize='lg' color={textColor} fontWeight='700'>
+          { pieChartData[2]}
+          </Text>
+        </Flex>
+        <VSeparator mx={{ base: "60px", xl: "60px", "2xl": "60px" }} />
+  
         <Flex direction='column' py='5px'>
           <Flex align='center'>
-            <Box h='8px' w='8px' bg='#54739C' borderRadius='50%' me='4px' />
+            <Box h='8px' w='8px' bg='#BAAC91' borderRadius='50%' me='4px' />
             <Text
               fontSize='xs'
               color='secondaryGray.600'
@@ -76,7 +94,7 @@ export default function Conversion(props) {
         <VSeparator mx={{ base: "60px", xl: "60px", "2xl": "60px" }} />
         <Flex direction='column' py='5px' me='10px'>
           <Flex align='center'>
-            <Box h='8px' w='8px' bg='#6AD2FF' borderRadius='50%' me='4px' />
+            <Box h='8px' w='8px' bg='#54739C' borderRadius='50%' me='4px' />
             <Text
               fontSize='xs'
               color='secondaryGray.600'
@@ -87,22 +105,6 @@ export default function Conversion(props) {
           </Flex>
           <Text fontSize='lg' color={textColor} fontWeight='700'>
           { pieChartData[1]}
-          </Text>
-        </Flex>
-        <VSeparator mx={{ base: "60px", xl: "60px", "2xl": "60px" }} />
-        <Flex direction='column' py='5px' me='10px'>
-          <Flex align='center'>
-            <Box h='8px' w='8px' bg='#6AD2FF' borderRadius='50%' me='4px' />
-            <Text
-              fontSize='xs'
-              color='secondaryGray.600'
-              fontWeight='700'
-              mb='5px'>
-              Open
-            </Text>
-          </Flex>
-          <Text fontSize='lg' color={textColor} fontWeight='700'>
-          { pieChartData[2]}
           </Text>
         </Flex>
       </Card>

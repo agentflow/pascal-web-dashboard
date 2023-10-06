@@ -65,6 +65,8 @@ function TopCreatorTable(props) {
           </Text>
           {/* <Button variant='action'>See all</Button> */}
         </Flex>
+        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+
         <Table {...getTableProps()} variant='simple' color='gray.500'>
           {/* <Thead>
             {headerGroups.map((headerGroup, index) => (
@@ -95,7 +97,17 @@ function TopCreatorTable(props) {
                 <Tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     let data = "";
-                    if (cell.column.Header === "Name") {
+                    if (cell.column.Header === "Address") {
+                      data = (
+                        <Text
+                          color={textColor}
+                          fontSize='sm'
+                          fontWeight='500'>
+                          {cell.value}
+                        </Text>
+                      );
+                    }
+                    else if (cell.column.Header === "Name") {
                       data = (
                         <Flex align='center'>
                           <Avatar
@@ -112,16 +124,7 @@ function TopCreatorTable(props) {
                           </Text>
                         </Flex>
                       );
-                    } else if (cell.column.Header === "Address") {
-                      data = (
-                        <Text
-                          color={textColorSecondary}
-                          fontSize='sm'
-                          fontWeight='500'>
-                          {cell.value}
-                        </Text>
-                      );
-                    } else if (cell.column.Header === "Rating") {
+                    }  else if (cell.column.Header === "Rating") {
                       data = (
                         <Box>
                           <Progress
@@ -148,6 +151,7 @@ function TopCreatorTable(props) {
             })}
           </Tbody>
         </Table>
+        </div>
       </Flex>
     </>
   );

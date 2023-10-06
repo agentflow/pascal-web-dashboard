@@ -210,7 +210,7 @@ export const barChartOptionsConsumption = {
 
 export const pieChartOptions = {
   labels: ["In Escrow", "Closed", "Open"],
-  colors: ["#4318FF", "#6AD2FF", "#EFF4FB"],
+  colors: ["#BAAC91", "#274C77", "#54739C"],
   chart: {
     width: "50px",
   },
@@ -239,7 +239,7 @@ export const pieChartOptions = {
     },
   },
   fill: {
-    colors: ["#4318FF", "#6AD2FF", "#EFF4FB"],
+    colors: ["#BAAC91", "#274C77", "#54739C"],
   },
   tooltip: {
     enabled: true,

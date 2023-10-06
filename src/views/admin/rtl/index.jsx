@@ -59,7 +59,7 @@ import tableDataCheck from "views/admin/default/variables/tableDataCheck.json";
 import tableDataComplex from "views/admin/default/variables/tableDataComplex.json";
 
 export default function UserReports() {
-  const brandColor = useColorModeValue("#54739C", "white");
+  const brandColor = useColorModeValue("#274C77", "white");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>

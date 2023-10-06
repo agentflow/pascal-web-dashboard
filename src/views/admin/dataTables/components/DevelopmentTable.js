@@ -94,6 +94,7 @@ export default function SearchAndUpload(props) {
   };
   const [showPDF, setShowPDF] = useState(false);
   const [filePDF, setFilePDF] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const handleFileClick = async (document) => {
     try {
@@ -246,22 +247,50 @@ export default function SearchAndUpload(props) {
         const userObj = JSON.parse(userJson);
         const userId = userObj.id;
         setUserId(userId);
-        const response = await axiosInstance.get(
-          "/users/getDocuments/getDocuments",
-          {
+        if (userObj.isAdmin) {
+          setIsAdmin(true);
+          const response = axiosInstance
+          .get('/users/getDocumentsForBrokerage/getDocumentsForBrokerage', {
             params: {
-              userId: userId,
+              userId: userObj.id,
+              brokerageName: userObj.brokerage,
             },
-          }
-        );
-        setData(response.data);
-        let dat = response.data;
-        const filteredAddresses = dat?.dealDocs?.filter(
-          (deal) =>
-            deal.address?.toLowerCase().includes(searchInput.toLowerCase()) ||
-            deal.clientName?.toLowerCase().includes(searchInput.toLowerCase())
-        );
-        setFilteredData(filteredAddresses);
+          }).then((response) => response.data)
+          .then((jsonData) => {
+            console.log(jsonData)
+            setData(jsonData);
+            let dat = jsonData;
+            const filteredAddresses = dat?.dealDocs?.filter(
+              (deal) =>
+                deal.address?.toLowerCase().includes(searchInput.toLowerCase()) ||
+                deal.clientName?.toLowerCase().includes(searchInput.toLowerCase())
+            );
+            setFilteredData(filteredAddresses);
+            })
+          .catch(error => {
+            window.location.href = "/";
+            console.log(error);
+          });
+        } else {
+          setIsAdmin(false);
+          const response = await axiosInstance.get(
+            "/users/getDocuments/getDocuments",
+            {
+              params: {
+                userId: userId,
+              },
+            }
+          );
+          setData(response.data);
+          let dat = response.data;
+          const filteredAddresses = dat?.dealDocs?.filter(
+            (deal) =>
+              deal.address?.toLowerCase().includes(searchInput.toLowerCase()) ||
+              deal.clientName?.toLowerCase().includes(searchInput.toLowerCase())
+          );
+          setFilteredData(filteredAddresses);
+        }
+
       } else {
         window.location.href = "/";
       }
@@ -279,23 +308,47 @@ export default function SearchAndUpload(props) {
         if (userJson) {
           const userObj = JSON.parse(userJson);
           const userId = userObj.id;
-          setUserId(userId);
-          const response = await axiosInstance.get(
-            "/users/getDocuments/getDocuments",
-            {
+          if (userObj.isAdmin) {
+            setIsAdmin(true);
+            const response = axiosInstance
+            .get('/users/getDocumentsForBrokerage/getDocumentsForBrokerage', {
               params: {
-                userId: userId,
+                userId: userObj.id,
+                brokerageName: userObj.brokerage,
               },
-            }
-          );
-          setData(response.data);
-          let dat = response.data;
-          const filteredAddresses = dat?.dealDocs?.filter(
-            (deal) =>
-              deal.address?.toLowerCase().includes(searchInput.toLowerCase()) ||
-              deal.clientName?.toLowerCase().includes(searchInput.toLowerCase())
-          );
-          setFilteredData(filteredAddresses);
+            }).then(response => response.data)
+            .then(jsonData => {
+              setData(jsonData);
+              let dat = jsonData;              const filteredAddresses = dat?.dealDocs?.filter(
+                (deal) =>
+                  deal.address?.toLowerCase().includes(searchInput.toLowerCase()) ||
+                  deal.clientName?.toLowerCase().includes(searchInput.toLowerCase())
+              );
+              setFilteredData(filteredAddresses);
+              })
+            .catch(error => {
+              window.location.href = "/";
+              console.log(error);
+            });
+          } else {
+            setIsAdmin(false);
+            const response = await axiosInstance.get(
+              "/users/getDocuments/getDocuments",
+              {
+                params: {
+                  userId: userId,
+                },
+              }
+            );
+            setData(response.data);
+            let dat = response.data;
+            const filteredAddresses = dat?.dealDocs?.filter(
+              (deal) =>
+                deal.address?.toLowerCase().includes(searchInput.toLowerCase()) ||
+                deal.clientName?.toLowerCase().includes(searchInput.toLowerCase())
+            );
+            setFilteredData(filteredAddresses);
+          }
         } else {
           window.location.href = "/";
         }
@@ -474,10 +527,10 @@ export default function SearchAndUpload(props) {
                           style={{
                             flex: "none",
                             width: "200px",
-                            textAlign: "right",
+                            textAlign: "left",
                           }}
                         >
-                          {loading ? "Loading..." : `${deal.length} Files`}
+                          {loading ? "Loading..." : `${deal.length} File(s)`}
                         </Text>
                       </Box>
                     </Flex>
