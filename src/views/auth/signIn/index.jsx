@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useHistory } from "react-router-dom";
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Box,
   Button,
@@ -21,14 +21,14 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
 import axios from "axios";
 import { setAuthTokens } from "axios-jwt";
-
+import { axiosInstance } from "api";
 
 function SignIn() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const history = useHistory(); 
+  const history = useHistory();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -40,30 +40,32 @@ function SignIn() {
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post(
-        "https://agentflow-v1.herokuapp.com/v1/auth/login",
-        {
+      // const response = await axios.post(
+      //   "https://agentflow-v1.herokuapp.com/v1/auth/login",
+      //   {
+      //     email: email,
+      //     password: password,
+      //   }
+      // )
+
+      axiosInstance
+        .post("auth/login", {
           email: email,
           password: password,
-        }
-      )
+        })
+        .then((response) => {
+          setAuthTokens({
+            accessToken: response.data.tokens.access.token,
+            refreshToken: response.data.tokens.refresh.token,
+          });
 
+          //Save the user object to async storage
+          AsyncStorage.setItem("user", JSON.stringify(response.data.user));
 
+          // Handle the response here
 
-      setAuthTokens({
-        accessToken: response.data.tokens.access.token,
-        refreshToken: response.data.tokens.refresh.token
-      })
-
-      //Save the user object to async storage 
-      await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
-    
-
-
-
-      // Handle the response here
-
-      history.push("/admin/dashboard");
+          history.push("/admin/dashboard");
+        });
     } catch (error) {
       // Handle login error here
 
@@ -86,8 +88,6 @@ function SignIn() {
         mt={{ base: "0px", md: "10vh" }}
         flexDirection="column"
       >
-        
-        
         <Box me="auto">
           <Heading fontSize="36px" mb="10px">
             Sign In
@@ -130,12 +130,7 @@ function SignIn() {
               value={email}
               onChange={handleEmailChange}
             />
-            <FormLabel
-              ms="4px"
-              fontSize="sm"
-              fontWeight="500"
-              display="flex"
-            >
+            <FormLabel ms="4px" fontSize="sm" fontWeight="500" display="flex">
               Password<Text color="#274C77">*</Text>
             </FormLabel>
             <InputGroup size="md">
@@ -161,11 +156,7 @@ function SignIn() {
             </InputGroup>
             <Flex justifyContent="space-between" align="center" mb="24px">
               <FormControl display="flex" alignItems="center">
-                <Checkbox
-                  id="remember-login"
-                  colorScheme="brand"
-                  me="10px"
-                />
+                <Checkbox id="remember-login" colorScheme="brand" me="10px" />
                 <FormLabel
                   htmlFor="remember-login"
                   mb="0"
