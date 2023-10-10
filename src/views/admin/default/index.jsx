@@ -208,7 +208,7 @@ export default function UserReports() {
                   "$" + jsonData.adminView.grossCommissions.toLocaleString()
                 );
               }
-
+              console.log(jsonData);
               return jsonData;
             })
             .catch((error) => {
