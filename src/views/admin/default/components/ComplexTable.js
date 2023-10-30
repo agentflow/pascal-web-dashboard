@@ -125,6 +125,8 @@ export default function ColumnsTable(props) {
                               ? "green.500"
                               : cell.value === "Offers"
                               ? "green.500"
+                              : cell.value === "preparing_property"
+                              ? "yellow.500"
                               : null
                           }
                           as={
@@ -136,13 +138,17 @@ export default function ColumnsTable(props) {
                               ? MdAssuredWorkload
                               : cell.value === "Offers"
                               ? MdDns
+                              : cell.value === "preparing_property"
+                              ? MdDns
                               : cell.value === "Deal Gone Hard"
                               ? MdCheckCircle
                               : null
                           }
                         />
                         <Text color={textColor} fontSize='sm' fontWeight='700'>
-                          {cell.value}
+                          {cell.value === "preparing_property"
+                            ? "Preparing Property"
+                            : cell.value}
                         </Text>
                       </Flex>
                     );
@@ -155,7 +161,8 @@ export default function ColumnsTable(props) {
                   } else if (cell.column.Header === "Progress") {
                     data = (
                       <Flex align='center'>
-                        <Text>{cell.value} %</Text>
+                        
+                        <Text>{isNaN(cell.value) ? '0%' : cell.value + ' %'}</Text>
                         {/* <Progress
                           variant='table'
                           // colorScheme='brandScheme'
